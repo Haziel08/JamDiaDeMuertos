@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dy368ug5olt24"]
+
+[node name="Main" type="Control" unique_id=1880853725]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="." unique_id=1791716361]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 251.0
+offset_right = 1089.0
+offset_bottom = 318.0
+theme_override_font_sizes/font_size = 48
+text = "EJECUCIÓN CORRECTA JAM DÍA DE MUERTOS"
+horizontal_alignment = 1
+vertical_alignment = 1
