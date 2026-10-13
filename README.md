@@ -87,6 +87,89 @@ Si lo ves, ¡todo quedó listo! 🎉
 
 ---
 
+## 7. Estructura del proyecto
+---
+
+## 🗂️ Estructura del proyecto
+
+Organizamos el proyecto **por funcionalidad**: cada parte del juego tiene su propia carpeta con sus escenas, scripts y recursos. Así cada quien trabaja en lo suyo sin romper lo de los demás.
+
+```
+📁 res://
+├── ⚙️ autoload/                 → 🌐 GLOBAL · scripts activos en todo el juego
+│   ├── game_state.gd            → luces recolectadas y minijuegos completados
+│   ├── audio_manager.gd         → reproducir música y efectos
+│   ├── scene_manager.gd         → cambiar de escena con transición
+│   └── settings.gd              → guardar volumen y opciones
+│
+├── 🧩 common/                   → 🌐 GLOBAL · recursos compartidos
+│   ├── components/              → piezas reutilizables (diálogos, transiciones, pausa)
+│   ├── fonts/
+│   ├── music/
+│   ├── sfx/
+│   ├── themes/                  → estilo visual de botones y UI
+│   └── ui/
+│
+├── 💀 player/                   → personaje que explora el mapa
+│   ├── sprites/
+│   └── sfx/
+│
+├── 📋 menus/
+│   ├── main_menu/               → Jugar · Opciones · Créditos
+│   ├── options/                 → volumen de música y efectos
+│   ├── credits/
+│   └── hud/                     → contador de luces 🕯️ 0/4
+│
+├── 🗺️ world/                    → mapa abierto
+│   ├── tilesets/
+│   ├── props/                   → velas, cempasúchil, tumbas
+│   ├── npcs/                    → personajes y sus diálogos
+│   └── minigame_zones/          → entradas a cada minijuego
+│
+├── 🎮 minigames/
+│   ├── minigame_1/              → 🕯️ luz 1
+│   ├── minigame_2/              → 🕯️ luz 2
+│   ├── minigame_3/              → 🕯️ luz 3
+│   └── minigame_4/              → 🕯️ luz 4
+│       ├── scripts/
+│       ├── scenes/
+│       ├── sprites/
+│       └── sfx/
+│
+└── 🏃 finale/                   → persecución final hasta el altar 🌼
+    ├── scripts/
+    ├── sprites/
+    └── sfx/
+```
+
+## 🔄 Flujo del juego
+
+```mermaid
+flowchart LR
+    A[📋 Menú principal] -->|Jugar| B[🗺️ Mapa abierto]
+    A --> O[🔊 Opciones]
+    A --> C[🎬 Créditos]
+    B <--> M1[🎮 Minijuego 1]
+    B <--> M2[🎮 Minijuego 2]
+    B <--> M3[🎮 Minijuego 3]
+    B <--> M4[🎮 Minijuego 4]
+    B -->|🕯️ 4 luces| F[🏃 Persecución]
+    F --> G[🌼 Altar · Final]
+```
+
+## 🤝 Cómo se conectan las partes
+
+Los minijuegos **no dependen del mapa** y el mapa **no depende de los minijuegos**. Todo pasa por los autoloads:
+
+```gdscript
+# Al ganar un minijuego:
+GameState.complete_minigame("minigame_1")   # entrega la luz 🕯️
+SceneManager.go_to_world()                  # regresa al mapa
+```
+
+Puedes probar tu minijuego solo, sin el resto del juego: abre tu escena y presiona **F6** (ejecutar escena actual).
+
+
 ## 🧯 Problemas comunes
 
 **"Este proyecto fue creado con otra versión de Godot" / te pide convertir el proyecto**
