@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://dpn01gy33rjgl"]
+
+[node name="MainMenu" type="Control" unique_id=856570084]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="." unique_id=7485818]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.105882354, 0.0627451, 0.1882353, 1)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1946620045]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="Center" unique_id=394032628]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Content" unique_id=1884842090]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Jam Día de Muertos"
+horizontal_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="Center/Content" unique_id=112827815]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="Center/Content/Buttons" unique_id=2027472552]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Jugar"
+
+[node name="OptionsButton" type="Button" parent="Center/Content/Buttons" unique_id=33421378]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Opciones"
+
+[node name="CreditsButton" type="Button" parent="Center/Content/Buttons" unique_id=921996502]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Créditos"
+
+[node name="QuitButton" type="Button" parent="Center/Content/Buttons" unique_id=860873870]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Salir"

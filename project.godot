@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="JamDiaDeMuertos"
-run/main_scene="uid://dy368ug5olt24"
+run/main_scene="uid://dpn01gy33rjgl"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -35,6 +35,10 @@ window/size/window_height_override=720
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
+
+[gui]
+
+theme/custom_font="uid://bx26cbjjsym8l"
 
 [physics]
 
