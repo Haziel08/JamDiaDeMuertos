@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dpn01gy33rjgl"]
 
-[ext_resource type="PackedScene" uid="uid://cu0n1t6a06npe" path="res://scenes/CreditsMenu.tscn" id="1_0ykhv"]
-[ext_resource type="Script" uid="uid://c43esp4vcnalk" path="res://menus/main_menu/main_menu.gd" id="1_2wh52"]
-[ext_resource type="PackedScene" uid="uid://cus0nan5bw0b1" path="res://scenes/OptionsMenu.tscn" id="2_2wh52"]
+[ext_resource type="Script" uid="uid://c43esp4vcnalk" path="res://menus/main_menu/main_menu.gd" id="1_vu5tu"]
+[ext_resource type="PackedScene" uid="uid://cu0n1t6a06npe" path="res://menus/credits/credits_menu.tscn" id="2_ml8bw"]
+[ext_resource type="PackedScene" uid="uid://cus0nan5bw0b1" path="res://menus/options/options_menu.tscn" id="3_oic2i"]
 
 [node name="MainMenu" type="Control" unique_id=856570084]
 layout_mode = 3
@@ -11,7 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_2wh52")
+script = ExtResource("1_vu5tu")
 
 [node name="Background" type="ColorRect" parent="." unique_id=7485818]
 layout_mode = 1
@@ -68,12 +68,12 @@ custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
 text = "Salir"
 
-[node name="CreditsMenu" parent="." unique_id=27006497 instance=ExtResource("1_0ykhv")]
+[node name="CreditsMenu" parent="." unique_id=27006497 instance=ExtResource("2_ml8bw")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="OptionsMenu" parent="." unique_id=199308786 instance=ExtResource("2_2wh52")]
+[node name="OptionsMenu" parent="." unique_id=199308786 instance=ExtResource("3_oic2i")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1

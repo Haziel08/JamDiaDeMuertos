@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://cyfhomka45t1r"]
+
+[ext_resource type="Script" uid="uid://dcy370tx8mgng" path="res://menus/pause/pause_menu.gd" id="1_2161m"]
+[ext_resource type="PackedScene" uid="uid://cus0nan5bw0b1" path="res://menus/options/options_menu.tscn" id="1_i3u0a"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1878973421 groups=["pause_menu"]]
+process_mode = 3
+layer = 20
+script = ExtResource("1_2161m")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=774364812]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="Center" type="CenterContainer" parent="Dim" unique_id=1373415541]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Dim/Center" unique_id=1091071110]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Dim/Center/Panel" unique_id=1016662230]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBox" type="VBoxContainer" parent="Dim/Center/Panel/Margin" unique_id=1013485483]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Dim/Center/Panel/Margin/VBox" unique_id=1303075499]
+layout_mode = 2
+text = "Pausa"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="Dim/Center/Panel/Margin/VBox" unique_id=1082239199]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Continuar"
+
+[node name="OptionsButton" type="Button" parent="Dim/Center/Panel/Margin/VBox" unique_id=1458212481]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Opciones"
+
+[node name="MainMenuButton" type="Button" parent="Dim/Center/Panel/Margin/VBox" unique_id=27118837]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Salir al menú"
+
+[node name="OptionsMenu" parent="." unique_id=199308786 instance=ExtResource("1_i3u0a")]
+unique_name_in_owner = true
+visible = false

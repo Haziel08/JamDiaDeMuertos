@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://dhkwsiqjhy6jv" path="res://world/world.gd" id="1_7g83o"]
 [ext_resource type="TileSet" uid="uid://crbkhbnan40dr" path="res://world/tilesets/world_tileset.tres" id="1_32lhk"]
 [ext_resource type="PackedScene" uid="uid://fkoeb8q67jpe" path="res://player/Player.tscn" id="1_kqs1s"]
+[ext_resource type="PackedScene" uid="uid://b4b55qnvahy1s" path="res://menus/hud/HUD.tscn" id="4_1lgw5"]
+[ext_resource type="PackedScene" uid="uid://cyfhomka45t1r" path="res://menus/pause/PauseMenu.tscn" id="5_hlk0d"]
 
 [node name="World" type="Node2D" unique_id=2106682353]
 y_sort_enabled = true
@@ -19,3 +21,7 @@ tile_set = ExtResource("1_32lhk")
 
 [node name="Player" parent="Entities" unique_id=442972059 instance=ExtResource("1_kqs1s")]
 position = Vector2(160, 90)
+
+[node name="Hud" parent="." unique_id=1704828479 instance=ExtResource("4_1lgw5")]
+
+[node name="PauseMenu" parent="." unique_id=1878973421 instance=ExtResource("5_hlk0d")]

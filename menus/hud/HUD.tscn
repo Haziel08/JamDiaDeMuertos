@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://b4b55qnvahy1s"]
+
+[ext_resource type="Script" uid="uid://bs1ecy8fhv5gi" path="res://menus/hud/hud.gd" id="1_rkfdl"]
+
+[node name="Hud" type="CanvasLayer" unique_id=1704828479]
+layer = 10
+script = ExtResource("1_rkfdl")
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1733814580]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin" unique_id=502960799]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="LightsLabel" type="Label" parent="Margin/HBoxContainer" unique_id=1681516646]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+text = "Luces 0/4"
+
+[node name="Spacer" type="Control" parent="Margin/HBoxContainer" unique_id=867145064]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="PauseButton" type="Button" parent="Margin/HBoxContainer" unique_id=1587202094]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Pausa"
