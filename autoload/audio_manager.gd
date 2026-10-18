@@ -6,6 +6,9 @@ extends Node
 const SFX_PLAYER_COUNT := 8   # cuántos efectos pueden sonar al mismo tiempo
 const SILENT_DB := -40.0
 
+const UI_HOVER := preload("res://common/sfx/ui_hover.ogg")
+const UI_CLICK := preload("res://common/sfx/ui_click.ogg")
+
 var _music_player: AudioStreamPlayer
 var _sfx_players: Array[AudioStreamPlayer] = []
 
@@ -65,3 +68,12 @@ func _get_free_sfx_player() -> AudioStreamPlayer:
 		if not player.playing:
 			return player
 	return _sfx_players[0]  # todos ocupados: reutiliza el primero
+	
+func add_button_sounds(root: Node) -> void:
+	## Agrega sonido de hover y clic a todos los botones dentro de root.
+	## Uso: AudioManager.add_button_sounds(self)
+	for node in root.find_children("*", "BaseButton", true, false):
+		var button := node as BaseButton
+		button.mouse_entered.connect(button.grab_focus)  # mouse y teclado se comportan igual
+		button.focus_entered.connect(play_sfx.bind(UI_HOVER, 0.05))
+		button.pressed.connect(play_sfx.bind(UI_CLICK))

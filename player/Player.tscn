@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://fkoeb8q67jpe"]
+
+[ext_resource type="Script" uid="uid://ch4sp404b44yq" path="res://player/player.gd" id="1_ulp21"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v0ik2"]
+size = Vector2(10, 4)
+
+[node name="Player" type="CharacterBody2D" unique_id=442972059]
+script = ExtResource("1_ulp21")
+
+[node name="Placeholder" type="ColorRect" parent="." unique_id=1265256286]
+offset_left = -8.0
+offset_top = -16.0
+offset_right = 8.0
+color = Color(0.17606631, 0.61113846, 0.61943537, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1089308853]
+position = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1175021480]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_v0ik2")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1051399488]
+position_smoothing_enabled = true
+position_smoothing_speed = 6.0

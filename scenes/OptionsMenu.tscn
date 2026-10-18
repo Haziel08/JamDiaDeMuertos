@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://cus0nan5bw0b1"]
+
+[ext_resource type="Script" uid="uid://8nvtf7aw1lpo" path="res://menus/options/options_menu.gd" id="1_dpnyk"]
+
+[node name="OptionsMenu" type="Control" unique_id=199308786]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dpnyk")
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1213620649]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Center" unique_id=992294498]
+layout_mode = 2
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel" unique_id=251186517]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel/Margin" unique_id=197512298]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/VBox" unique_id=316013152]
+layout_mode = 2
+text = "Opciones"
+horizontal_alignment = 1
+
+[node name="MusicRow" type="HBoxContainer" parent="Center/Panel/Margin/VBox" unique_id=1352296129]
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="Center/Panel/Margin/VBox/MusicRow" unique_id=295839645]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+text = "Música"
+
+[node name="MusicSlider" type="HSlider" parent="Center/Panel/Margin/VBox/MusicRow" unique_id=386170178]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+
+[node name="SfxRow" type="HBoxContainer" parent="Center/Panel/Margin/VBox" unique_id=1547324908]
+layout_mode = 2
+
+[node name="SfxLabel" type="Label" parent="Center/Panel/Margin/VBox/SfxRow" unique_id=2094523976]
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+text = "Efectos"
+
+[node name="SfxSlider" type="HSlider" parent="Center/Panel/Margin/VBox/SfxRow" unique_id=714534669]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+
+[node name="FullscreenCheck" type="CheckButton" parent="Center/Panel/Margin/VBox" unique_id=821245833]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Pantalla completa"
+
+[node name="BackButton" type="Button" parent="Center/Panel/Margin/VBox" unique_id=106711063]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Volver"

@@ -1,10 +1,32 @@
 [gd_scene format=3 uid="uid://clag35shenh2a"]
 
-[node name="World" type="Node2D" unique_id=2106682353]
+[ext_resource type="PackedScene" uid="uid://fkoeb8q67jpe" path="res://player/Player.tscn" id="1_kqs1s"]
 
-[node name="Label" type="Label" parent="." unique_id=720319279]
-offset_left = 60.0
-offset_top = 72.0
-offset_right = 270.0
-offset_bottom = 95.0
-text = "MUNDO EN CONTRUCCION"
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v0ik2"]
+size = Vector2(26, 27)
+
+[node name="World" type="Node2D" unique_id=2106682353]
+y_sort_enabled = true
+
+[node name="Ground" type="ColorRect" parent="." unique_id=250662852]
+offset_right = 640.0
+offset_bottom = 360.0
+mouse_filter = 2
+color = Color(0.16862746, 0.11372549, 0.22745098, 1)
+
+[node name="Obstacle" type="StaticBody2D" parent="." unique_id=755521659]
+position = Vector2(240, 120)
+
+[node name="Visual" type="ColorRect" parent="Obstacle" unique_id=1623257324]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(0.24719188, 0.2471919, 0.24719188, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacle" unique_id=237251307]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_v0ik2")
+
+[node name="Player" parent="." unique_id=442972059 instance=ExtResource("1_kqs1s")]
+position = Vector2(160, 90)
