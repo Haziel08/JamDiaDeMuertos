@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://ci2au82mdeltb"
+path="res://.godot/imported/panteonero.dialogue-13eb04adc8f856c623b985b246d94d14.tres"
+
+[deps]
+
+source_file="res://world/npcs/dialogues/panteonero.dialogue"
+dest_files=["res://.godot/imported/panteonero.dialogue-13eb04adc8f856c623b985b246d94d14.tres"]
+
+[params]
+
+defaults=true

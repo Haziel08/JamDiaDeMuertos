@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://dpl5ve6ec2rgr"]
+
+[ext_resource type="Script" uid="uid://b38wqmuvhkxpd" path="res://world/npcs/npc.gd" id="1_x6rej"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v0ik2"]
+size = Vector2(10, 4)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l7hni"]
+radius = 14.0
+
+[node name="Npc" type="StaticBody2D" unique_id=410754066]
+script = ExtResource("1_x6rej")
+
+[node name="Placeholder" type="ColorRect" parent="." unique_id=710704039]
+offset_left = -8.0
+offset_top = -16.0
+offset_right = 32.0
+offset_bottom = 24.0
+color = Color(0.17709225, 0.4940821, 0.35407096, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1327469664]
+position = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1821438053]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_v0ik2")
+
+[node name="InteractionArea" type="Area2D" parent="." unique_id=1863655381]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=1682445626]
+position = Vector2(0, 0.8)
+shape = SubResource("CircleShape2D_l7hni")
+
+[node name="Prompt" type="Label" parent="." unique_id=1716245878]
+offset_right = 40.0
+offset_bottom = 13.0

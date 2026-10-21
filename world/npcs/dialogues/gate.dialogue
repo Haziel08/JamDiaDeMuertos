@@ -1,0 +1,14 @@
+# Portón hacia el puente (persecución final)
+
+~ start
+if GameState.has_all_lights()
+	[color=#a99cc8]Las luces iluminan el camino hacia el puente.[/color]
+	[color=#a99cc8]¿Cruzo el portón?[/color]
+	- Sí
+		$> GameState.request_finale()
+		=> END
+	- Todavía no => END
+else
+	[color=#a99cc8]El portón está cerrado y del otro lado todo está oscuro…[/color]
+	[color=#a99cc8]Necesito más luces para iluminar el camino. Llevo {{GameState.get_light_count()}} de 3.[/color]
+	=> END

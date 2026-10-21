@@ -1,0 +1,26 @@
+# Cocinero — minijuego de la ofrenda que cae del cielo
+
+~ start
+if GameState.is_minigame_completed("minigame_ofrenda")
+	Cocinero: ¡Qué buenos reflejos! Gracias por la ayuda.
+	=> END
+elif GameState.has_met("cocinero")
+	Cocinero: ¿Entonces sí me ayudas?
+	- Sí => accept
+	- No => END
+else
+	$> GameState.mark_met("cocinero")
+	Cocinero: Hola, veo que eres nuevo por aquí y que necesitas una luz, así que te ofrezco un trato.
+	Cocinero: Necesito que me ayudes a recoger unos alimentos: yo te los iré pasando y tú los atrapas.
+	Cocinero: Pero debes ser ágil, porque soy rápido, y si alguno toca el suelo no te daré lo que buscas. ¿Aceptas?
+	- Sí => accept
+	- No => END
+
+~ accept
+Cocinero: ¡Así me gusta! Prepárate.
+$> GameState.request_minigame("minigame_ofrenda")
+=> END
+
+~ reward
+Cocinero: ¡Ni uno tocó el suelo! Un trato es un trato: aquí tienes tu luz.
+=> END

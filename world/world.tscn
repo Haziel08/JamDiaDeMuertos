@@ -4,7 +4,12 @@
 [ext_resource type="TileSet" uid="uid://crbkhbnan40dr" path="res://world/tilesets/world_tileset.tres" id="1_32lhk"]
 [ext_resource type="PackedScene" uid="uid://fkoeb8q67jpe" path="res://player/Player.tscn" id="1_kqs1s"]
 [ext_resource type="PackedScene" uid="uid://b4b55qnvahy1s" path="res://menus/hud/HUD.tscn" id="4_1lgw5"]
+[ext_resource type="PackedScene" uid="uid://dpl5ve6ec2rgr" path="res://world/npcs/npc.tscn" id="4_fn3g3"]
+[ext_resource type="Resource" uid="uid://dao20p57ug8wr" path="res://world/npcs/dialogues/mercader.dialogue" id="5_4papg"]
 [ext_resource type="PackedScene" uid="uid://cyfhomka45t1r" path="res://menus/pause/PauseMenu.tscn" id="5_hlk0d"]
+[ext_resource type="Resource" uid="uid://dvrwvgtbl2ojp" path="res://world/npcs/dialogues/cocinero.dialogue" id="6_fyhu2"]
+[ext_resource type="Resource" uid="uid://ci2au82mdeltb" path="res://world/npcs/dialogues/panteonero.dialogue" id="7_ov2xu"]
+[ext_resource type="Resource" uid="uid://2tlsk5cviamu" path="res://world/npcs/dialogues/gate.dialogue" id="8_fyhu2"]
 
 [node name="World" type="Node2D" unique_id=2106682353]
 y_sort_enabled = true
@@ -22,6 +27,42 @@ tile_set = ExtResource("1_32lhk")
 [node name="Player" parent="Entities" unique_id=442972059 instance=ExtResource("1_kqs1s")]
 position = Vector2(160, 90)
 
+[node name="Guide" parent="Entities" unique_id=410754066 instance=ExtResource("4_fn3g3")]
+position = Vector2(139, -44)
+
+[node name="Placeholder" parent="Entities/Guide" index="0" unique_id=710704039]
+color = Color(0.9098039, 0.9098039, 0.9098039, 1)
+
+[node name="Mercader" parent="Entities" unique_id=2132112754 instance=ExtResource("4_fn3g3")]
+position = Vector2(208, -45)
+dialogue = ExtResource("5_4papg")
+
+[node name="Placeholder" parent="Entities/Mercader" index="0" unique_id=710704039]
+color = Color(0.9490196, 0.7882353, 0.29803923, 1)
+
+[node name="Cocinero" parent="Entities" unique_id=744040238 instance=ExtResource("4_fn3g3")]
+position = Vector2(285, -44)
+dialogue = ExtResource("6_fyhu2")
+
+[node name="Placeholder" parent="Entities/Cocinero" index="0" unique_id=710704039]
+color = Color(0.8509804, 0.2901961, 0.2901961, 1)
+
+[node name="Panteonero" parent="Entities" unique_id=1211066833 instance=ExtResource("4_fn3g3")]
+position = Vector2(41, -47)
+dialogue = ExtResource("7_ov2xu")
+
+[node name="Placeholder" parent="Entities/Panteonero" index="0" unique_id=710704039]
+color = Color(0.3529412, 0.6431373, 0.4117647, 1)
+
+[node name="Gate" parent="Entities" unique_id=1597522351 instance=ExtResource("4_fn3g3")]
+position = Vector2(469, 107)
+dialogue = ExtResource("8_fyhu2")
+
 [node name="Hud" parent="." unique_id=1704828479 instance=ExtResource("4_1lgw5")]
 
 [node name="PauseMenu" parent="." unique_id=1878973421 instance=ExtResource("5_hlk0d")]
+
+[editable path="Entities/Guide"]
+[editable path="Entities/Mercader"]
+[editable path="Entities/Cocinero"]
+[editable path="Entities/Panteonero"]

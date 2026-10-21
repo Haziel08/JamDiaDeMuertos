@@ -1,0 +1,40 @@
+# Panteonero — minijuego de acomodar tumbas
+
+# Frase "al aire" cuando el jugador pasa cerca (se usará más adelante).
+~ bark
+Panteonero: Vaya, ¡sí que hay demasiadas tumbas! Y todavía me faltan varias por acomodar… Uf, pero estoy bastante agotado...
+=> END
+
+~ start
+if GameState.is_minigame_completed("minigame_tumbas")
+	Panteonero: ¡Las tumbas quedaron preciosas! Gracias de nuevo.
+	=> END
+elif GameState.has_met("panteonero")
+	Panteonero: ¿Cambiaste de opinión? ¿Me ayudas a acomodar las tumbas?
+	- Sí => accept
+	- No => decline
+else
+	$> GameState.mark_met("panteonero")
+	Panteonero: ¡Buenas noches, caballero! ¿Hay algo en lo que pueda ayudarte?
+	Tú: ¡Hola! Disculpe que lo moleste. Estoy recolectando algunas luces para poder regresar a casa.
+	Tú: ¿Cree que podría regalarme alguna de las que está colocando en las tumbas?
+	Panteonero: ¡Por supuesto! Aunque debo decirte que tengo una cantidad limitada de luces y no estoy seguro de que me sobre alguna para darte.
+	Panteonero: ¿Qué te parece si me ayudas a acomodar las tumbas que aún me faltan por adornar?
+	Panteonero: Así podré llevar la cuenta de las luces que tengo y, a cambio, te regalaré una de ellas. ¿Aceptas?
+	- Sí => accept
+	- No => decline
+
+~ accept
+Panteonero: ¡Estupendo! ¡Tu ayuda me viene de maravilla! Te lo agradezco mucho.
+Panteonero: Sígueme, te iré guiando para que sepas cómo decorarlas.
+$> GameState.request_minigame("minigame_tumbas")
+=> END
+
+~ decline
+Panteonero: Lo entiendo. Sé que trabajar entre tantas tumbas puede resultar un poco escalofriante. Si cambias de opinión, aquí estaré.
+[color=#a99cc8](¡Qué lástima! Su ayuda me hubiera venido de maravilla).[/color]
+=> END
+
+~ reward
+Panteonero: ¡Trabajo impecable! Como lo prometí, aquí tienes tu luz.
+=> END

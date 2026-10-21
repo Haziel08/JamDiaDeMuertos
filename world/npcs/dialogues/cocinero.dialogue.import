@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://dvrwvgtbl2ojp"
+path="res://.godot/imported/cocinero.dialogue-5e737f0e6dd9b0a3d4ad8226dfab3dd2.tres"
+
+[deps]
+
+source_file="res://world/npcs/dialogues/cocinero.dialogue"
+dest_files=["res://.godot/imported/cocinero.dialogue-5e737f0e6dd9b0a3d4ad8226dfab3dd2.tres"]
+
+[params]
+
+defaults=true

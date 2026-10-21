@@ -1,0 +1,34 @@
+# Doña Clara (mercader anciana) — minijuego de las trajineras
+
+~ start
+if GameState.is_minigame_completed("minigame_trajineras")
+	Doña Clara: ¡Gracias otra vez, joven! Que esa luz te guíe a casa.
+	=> END
+elif GameState.has_met("mercader")
+	Doña Clara: ¿Lo pensaste mejor, joven? ¿Me ayudas a recolectar las flores?
+	- Sí => accept
+	- No => decline
+else
+	$> GameState.mark_met("mercader")
+	Doña Clara: ¡Hola, joven! ¿Eres nuevo por aquí? ¿Te interesa adquirir una de nuestras hermosas flores de cempasúchil?
+	Tú: Así es, soy nuevo por aquí. Por el momento no estoy interesado, gracias.
+	Tú: La verdad es que estoy en busca de luces. ¿Tendrá alguna que pueda regalarme? Se la compraría, pero no cuento con dinero.
+	Doña Clara: Ya veo. Te propongo algo: debido a mi avanzada edad, me resulta muy difícil recolectar las flores de cempasúchil que vendo.
+	Doña Clara: Estas se encuentran cruzando el río.
+	Doña Clara: Si me ayudas a recolectarlas, te recompensaré con una de las luces que necesitas. ¿Qué dices?
+	- Sí => accept
+	- No => decline
+
+~ accept
+Doña Clara: ¡Muchas gracias, joven! ¡Sabía que podía contar contigo!
+$> GameState.request_minigame("minigame_trajineras")
+=> END
+
+~ decline
+Doña Clara: ¡Qué lástima! Me parecía un buen trato, pero supongo que tendrá que ser en otra ocasión.
+=> END
+
+# Se reproduce al volver del minijuego ganado (antes del recuerdo).
+~ reward
+Doña Clara: ¡Lo lograste! Aquí tienes la luz que te prometí. Cuídala bien.
+=> END

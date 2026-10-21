@@ -1,0 +1,27 @@
+~ start
+[color=#a99cc8]Mmm… ¿Qué me pasó? ¿Dónde estoy?[/color]
+$> guide_approach()
+Desconocido: ¡Hola! ¿Qué tal? No creo haberte visto antes por aquí. ¿Eres nuevo?
+Tú: Hola, sí… ¿Podrías ayudarme? No sé dónde estoy y necesito encontrar el camino a casa para regresar con mi familia.
+Tú: No recuerdo muy bien cómo llegué aquí; todos mis recuerdos están muy borrosos. ¿Sabes qué lugar es este?
+Desconocido: Ya veo… Parece que estás bastante perdido.
+Desconocido: Como tal, este lugar no tiene un nombre en particular, por ser un lugar de paso.
+Desconocido: Dime, ¿necesitas ayuda para encontrar la salida?
+Tú: Sí, por favor. Tengo que volver a casa a ver a mi familia. Deben estar muy preocupados por mí…
+Desconocido: Entiendo… Pero, si quieres volver a verlos, será mejor que te des prisa.
+Desconocido: El tiempo se está agotando y, cuando se acabe, ELLA no te dejará marcharte.
+Tú: ¿ELLA…? ¿De quién estás hablando? ¿Quién es ella?
+Desconocido: Lamento no poder darte más información.
+Desconocido: Pero, si de verdad quieres volver a ver a tu familia, te aconsejo buscar luces.
+Desconocido: El camino al puente está sumido en la oscuridad, y no querrás aventurarte por él sin una forma de iluminar tu camino.
+Desconocido: Puedes ir al pueblo que se encuentra más adelante; quizá sus habitantes puedan ayudarte…
+Desconocido: …siempre y cuando tú también estés dispuesto a echarles la mano.
+Desconocido: Eso sí, te advierto que tendrás que superar algunos desafíos o hacer ciertos favores para que alguien comparta una de sus luces contigo.
+Tú: Está bien... Pero, una vez que consiga las luces, ¿dónde se supone que está el puente?
+Desconocido: Tendrás que dirigirte hacia el fondo. Allí encontrarás un portón que conduce al puente.
+Desconocido: Crúzalo y podrás regresar a casa.
+Desconocido: Pero recuerda: no te entretengas... El tiempo apremia, y si tardas demasiado, ella te alcanzará.
+[color=#a99cc8]… ¿Ella?[/color]
+Tú: De acuerdo, ¡muchas gracias!
+$> GameState.intro_done = true
+=> END

@@ -1,0 +1,24 @@
+# Recuerdos: se eligen por cantidad de luces (light_1, light_2, light_3), no por minijuego.
+
+~ light_1
+Tú: Ahora recuerdo un poco mejor cómo llegué aquí...
+Tú: Era de noche y estaba cerrando mi negocio cuando noté unas siluetas al final de la calle que me observaban; parecían al menos tres sujetos.
+Tú: Se acercaron y me preguntaron si todavía tenía servicio, y les contesté que no, que ya había cerrado…
+Tú: …pero después de eso, ya no recuerdo qué más pasó.
+=> END
+
+~ light_2
+Tú: Esta segunda luz me ha ayudado a recordar un poco más.
+Tú: Después de negarles el servicio, uno de ellos me sujetó por la espalda y los otros se metieron a robar a mi local.
+Tú: Forcejeé para soltarme, recibí un golpe y, de pronto, todo se volvió oscuro…
+Tú: Tal vez eso me dejó inconsciente y me vinieron a tirar a donde sea que esté ahora.
+Tú: Tengo que apurarme, mi familia debe estar esperándome.
+=> END
+
+~ light_3
+Tú: Ya tengo más claro el panorama.
+Tú: Desperté en un auto, atado y desorientado. No recuerdo sus rostros, solo que reían y reían.
+Tú: El auto se detuvo y me arrojaron fuera. Uno de ellos se bajó y traía algo en la mano…
+Tú: Vamos, vamos, debo recordar qué más…
+Tú: Bueno, ya nada de eso importa. Ya tengo las tres luces, debo ir a casa.
+=> END

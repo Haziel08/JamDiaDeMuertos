@@ -32,6 +32,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func pause_game() -> void:
+	if GameState.in_dialogue:
+		return
 	get_tree().paused = true
 	main_panel.show()
 	options_menu.hide()

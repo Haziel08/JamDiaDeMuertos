@@ -36,3 +36,15 @@ unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Pausa"
+
+[node name="HintLabel" type="Label" parent="." unique_id=1050564913]
+unique_name_in_owner = true
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 13.0
+grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+horizontal_alignment = 1

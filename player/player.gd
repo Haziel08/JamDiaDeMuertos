@@ -20,6 +20,8 @@ var _held_directions: Array[Vector2] = []  # teclas presionadas, en orden
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
+func _ready() -> void:
+	add_to_group("player")
 
 func _physics_process(_delta: float) -> void:
 	var direction := _get_input_direction() if can_move else Vector2.ZERO
