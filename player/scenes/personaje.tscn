@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dckaxn66337r8"]
+
+[ext_resource type="Script" uid="uid://ltlk0v4scp8e" path="res://player/scenes/personaje.gd" id="1_012h6"]
+[ext_resource type="SpriteFrames" uid="uid://ctgswwukke4do" path="res://player/sprites/sprite_frames_personaje.tres" id="2_qjaw5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bacok"]
+size = Vector2(14, 16)
+
+[node name="Personaje" type="CharacterBody2D" unique_id=833555199]
+position = Vector2(94, 55)
+collision_layer = 4
+script = ExtResource("1_012h6")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=445807248]
+shape = SubResource("RectangleShape2D_bacok")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1896823125]
+texture_filter = 1
+sprite_frames = ExtResource("2_qjaw5")
+animation = &"idle_down"
+autoplay = "idle_down"
