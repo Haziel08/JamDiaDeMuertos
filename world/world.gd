@@ -1,5 +1,5 @@
 extends Node2D
-## Mundo abierto: cámara, intro, tutorial, diálogos, minijuegos, recompensas y portón final.
+## Mundo abierto: mapa, cámara, intro, tutorial, diálogos, minijuegos, recompensas y portón final.
 
 const INTRO := preload("res://world/npcs/dialogues/intro.dialogue")
 const MEMORIES := preload("res://world/npcs/dialogues/memories.dialogue")
@@ -11,13 +11,14 @@ const REWARD_DIALOGUES := {
 	"minigame_tumbas": preload("res://world/npcs/dialogues/panteonero.dialogue"),
 }
 
-@onready var ground: TileMapLayer = $Ground
+@onready var ground: TileMapLayer = $Map/Ground
 @onready var player: CharacterBody2D = $Entities/Player
 @onready var guide: Node2D = $Entities/Guide
 @onready var hud: CanvasLayer = $Hud
 
 
 func _ready() -> void:
+	_place_at_markers()
 	if GameState.has_return_position:
 		player.global_position = GameState.world_return_position
 	_set_camera_limits()
@@ -105,6 +106,20 @@ func _on_dialogue_ended(_resource: DialogueResource) -> void:
 	elif GameState.pending_finale:
 		GameState.pending_finale = false
 		SceneManager.go_to_finale()
+
+
+func _place_at_markers() -> void:
+	## Coloca a cada personaje en el Marker2D del mapa que se llama igual (Map/Markers).
+	## Para mover a alguien, mueve su marcador en world/map/town_map.tscn.
+	var markers := get_node_or_null("Map/Markers")
+	if markers == null:
+		return
+	for marker in markers.get_children():
+		var target := get_node_or_null(NodePath("Entities/" + marker.name)) as Node2D
+		if target == null:
+			continue
+		target.global_position = marker.global_position
+		target.reset_physics_interpolation()
 
 
 func _set_camera_limits() -> void:

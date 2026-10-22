@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://sah6ji6t8j4b"]
+
+[ext_resource type="PackedScene" uid="uid://fkoeb8q67jpe" path="res://player/Player.tscn" id="1_y2hph"]
+[ext_resource type="PackedScene" uid="uid://cyfhomka45t1r" path="res://menus/pause/PauseMenu.tscn" id="2_4jtfd"]
+
+[node name="Chase" type="Node2D" unique_id=1352701952]
+
+[node name="Bridge" type="TileMapLayer" parent="." unique_id=736971313]
+
+[node name="Node2D" type="Node2D" parent="." unique_id=2037075208]
+
+[node name="Player" parent="Node2D" unique_id=442972059 instance=ExtResource("1_y2hph")]
+
+[node name="PauseMenu" parent="." unique_id=1878973421 instance=ExtResource("2_4jtfd")]
