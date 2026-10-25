@@ -17,17 +17,19 @@ var can_move: bool = true
 var facing: Vector2 = Vector2.DOWN  # última dirección a la que miró
 
 var _held_directions: Array[Vector2] = []  # teclas presionadas, en orden
+var _knockback: Vector2 = Vector2.ZERO     # empujón (por ejemplo, cuando te toca un alma)
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 func _ready() -> void:
 	add_to_group("player")
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	var direction := _get_input_direction() if can_move else Vector2.ZERO
 
-	velocity = direction * speed
+	velocity = direction * speed + _knockback
 	move_and_slide()
+	_knockback = _knockback.move_toward(Vector2.ZERO, 900.0 * delta)
 
 	if direction != Vector2.ZERO:
 		facing = direction
@@ -66,3 +68,15 @@ func _direction_name(direction: Vector2) -> String:
 	if direction.x > 0:
 		return "right"
 	return "up" if direction.y < 0 else "down"
+
+
+func push_from(from: Vector2, force: float) -> void:
+	## Empuja al jugador lejos de un punto y lo hace parpadear.
+	var away := global_position - from
+	if away.length() < 0.1:
+		away = -facing
+	_knockback = away.normalized() * force
+	var t := create_tween()
+	for i in 3:
+		t.tween_property(sprite, "modulate", Color(0.6, 0.6, 1.0, 0.4), 0.08)
+		t.tween_property(sprite, "modulate", Color.WHITE, 0.08)

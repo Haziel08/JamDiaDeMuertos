@@ -30,6 +30,7 @@ func _ready() -> void:
 
 	if not GameState.intro_done:
 		player.can_move = false
+		player.sprite.rotation_degrees = -90.0   # despierta acostado en el pasto
 	await get_tree().create_timer(0.5).timeout  # deja terminar el fundido
 
 	if not GameState.intro_done:
@@ -56,7 +57,7 @@ func _process(_delta: float) -> void:
 	var sign_marker := get_node_or_null("Map/Markers/Sign") as Node2D
 	if sign_marker and player.global_position.x > sign_marker.global_position.x - 40.0:
 		_welcomed = true
-		hud.show_hint("Bienvenido al pueblo")
+		hud.show_hint("Bienvenido a ???")
 		await get_tree().create_timer(3.0, false).timeout
 		if is_inside_tree():
 			hud.hide_hint()
@@ -84,7 +85,11 @@ func _wait(seconds: float) -> bool:
 
 
 func guide_approach() -> void:
-	## Se llama desde intro.dialogue: el guía camina hasta el jugador y se miran.
+	## Se llama desde intro.dialogue: el jugador se levanta, el guía camina hasta él y se miran.
+	var stand := create_tween()
+	stand.tween_property(player.sprite, "rotation_degrees", 0.0, 0.35)
+	stand.parallel().tween_property(player.sprite, "position:y", -12.0, 0.18)
+	stand.tween_property(player.sprite, "position:y", -8.0, 0.15)
 	var target := player.global_position + Vector2(24, 0)
 	var walk_dir := "left" if target.x < guide.global_position.x else "right"
 	if guide.has_method("play_if_exists"):
@@ -156,3 +161,22 @@ func _set_camera_limits() -> void:
 	camera.limit_right = int(bottom_right.x)
 	camera.limit_bottom = int(bottom_right.y)
 	camera.reset_smoothing()
+	_add_map_edges(top_left, bottom_right)
+
+
+func _add_map_edges(top_left: Vector2, bottom_right: Vector2) -> void:
+	## Paredes invisibles en las orillas del mapa: nadie se sale aunque haya un hueco entre árboles.
+	var edges := StaticBody2D.new()
+	edges.name = "MapEdges"
+	var sides := [
+		[Vector2.RIGHT, top_left.x], [Vector2.LEFT, -bottom_right.x],
+		[Vector2.DOWN, top_left.y + 8.0], [Vector2.UP, -bottom_right.y],
+	]
+	for side in sides:
+		var shape := WorldBoundaryShape2D.new()
+		shape.normal = side[0]
+		shape.distance = side[1]
+		var col := CollisionShape2D.new()
+		col.shape = shape
+		edges.add_child(col)
+	add_child(edges)

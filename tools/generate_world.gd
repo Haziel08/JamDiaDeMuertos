@@ -1,5 +1,5 @@
 extends SceneTree
-## Genera el TileSet, el mapa completo (recámara → pasillo → pueblo) y las animaciones.
+## Genera el TileSet, el mapa completo (claro → bosque y río → pueblo) y las animaciones.
 ## Uso (desde la carpeta del proyecto):  godot --headless -s res://tools/generate_world.gd
 
 const T := 16
@@ -8,7 +8,8 @@ const TOWN_W := 96
 const W := OX + TOWN_W
 const H := 44
 
-enum { FLOOR, WATER, NATURE, HOUSE, ELEMENT, DETAIL, BOAT, ISLAND, WATER_ANIM, CAVE, WALL, WOOD, BED }
+enum { FLOOR = 0, WATER = 1, NATURE = 2, HOUSE = 3, ELEMENT = 4, DETAIL = 5, BOAT = 6, ISLAND = 7,
+		WATER_ANIM = 8, CAVE = 9, WATER_BASE = 13, BRIDGE = 14, SHORE = 15, BLOCK = 16 }
 
 const SOURCES := {
 	FLOOR: "res://common/art/ninja/tilesets/TilesetFloor.png",
@@ -18,19 +19,23 @@ const SOURCES := {
 	ELEMENT: "res://common/art/ninja/tilesets/TilesetElement.png",
 	DETAIL: "res://common/art/ninja/tilesets/TilesetFloorDetail.png",
 	BOAT: "res://common/art/ninja/vehicles/Boat.png",
-	ISLAND: "res://common/art/custom/tiles_isla.png",
+	ISLAND: "res://common/art/custom/tiles_isla_orilla.png",
 	WATER_ANIM: "res://common/art/custom/agua_animada.png",
 	CAVE: "res://common/art/custom/tiles_cueva.png",
-	WALL: "res://common/art/ninja/interior/TilesetWallSimple.png",
-	WOOD: "res://common/art/ninja/interior/TilesetInteriorFloor.png",
-	BED: "res://common/art/ninja/interior/tileset_bed.png",
+	WATER_BASE: "res://common/art/custom/agua_animada.png",
+	BRIDGE: "res://common/art/custom/puente_piedra.png",
+	SHORE: "res://common/art/custom/orilla_lago.png",
+	BLOCK: "res://common/art/custom/bloqueo.png",   # invisible: solo choca
 }
 
-# Pasillo
-const CORR_X0 := 14
-const CORR_X1 := 59
-const CORR_TOP := 20      # orilla de arriba (se camina)
-const CORR_BOTTOM := 23   # acantilado de abajo (choca)
+# Zona de inicio (al aire libre) y camino hacia el pueblo
+const CLEARING := Vector2(11, 21)     # centro del claro donde despierta el jugador
+const PATH_TOP := 19                 # el camino del bosque va de la fila 19 a la 24
+const PATH_BOTTOM := 24
+const RIVER_X0 := 40                 # río (solo una parte del camino tiene agua)
+const RIVER_X1 := 45
+const BRIDGE_Y0 := 20                # puente de piedra: barandal 20, piso 21-22, barandal 23
+const BRIDGE_Y1 := 23
 
 var rng := RandomNumberGenerator.new()
 var ground: TileMapLayer
@@ -40,6 +45,8 @@ var above: TileMapLayer
 var path := {}
 var water := {}
 var blocked := {}
+var west_used := {}   # celdas ocupadas por árboles en el bosque del inicio
+var water_base: TileMapLayer
 
 
 func _init() -> void:
@@ -71,13 +78,19 @@ func build_tileset() -> TileSet:
 		src.texture = tex
 		src.texture_region_size = Vector2i(T, T)
 		ts.add_source(src, id)
-		if id == WATER_ANIM:
-			# Un solo tile animado de 4 cuadros.
+		if id == BLOCK:
+			src.create_tile(Vector2i(0, 0))
+			_add_collision(src, Vector2i(0, 0), square)
+			continue
+		if id == WATER_ANIM or id == WATER_BASE:
+			# Un solo tile animado de 4 cuadros. WATER_ANIM choca; WATER_BASE es solo
+			# el fondo que se ve debajo de las orillas y el puente.
 			src.create_tile(Vector2i(0, 0))
 			src.set_tile_animation_frames_count(Vector2i(0, 0), 4)
 			for f in 4:
 				src.set_tile_animation_frame_duration(Vector2i(0, 0), f, 0.35)
-			_add_collision(src, Vector2i(0, 0), square)
+			if id == WATER_ANIM:
+				_add_collision(src, Vector2i(0, 0), square)
 			continue
 		for y in img.get_height() / T:
 			for x in img.get_width() / T:
@@ -114,13 +127,15 @@ func _is_solid(id: int, c: Vector2i) -> bool:
 			if c.y == 18 and c.x >= 15:
 				return false         # piedritas
 			return true
-		HOUSE, ELEMENT, BOAT, WALL, BED:
+		HOUSE, ELEMENT, BOAT, SHORE:
 			return true
+		BRIDGE:
+			return c.y != 1          # barandales chocan, el piso se camina
 		ISLAND:
 			return c.y == 2 or c.y >= 3 and c.x <= 7   # acantilados y agua
 		CAVE:
 			return c.y < 8           # oscuridad, rocas y árboles (el pasto claro no choca)
-	return false                     # FLOOR, DETAIL, WOOD
+	return false                     # FLOOR, DETAIL
 
 
 # ================================================================== Mapa
@@ -128,6 +143,8 @@ func _is_solid(id: int, c: Vector2i) -> bool:
 func build_map(ts: TileSet) -> Node2D:
 	var root := Node2D.new()
 	root.name = "TownMap"
+	water_base = _layer(root, "WaterBase", ts)
+	water_base.collision_enabled = false
 	ground = _layer(root, "Ground", ts)
 	deco = _layer(root, "Decoration", ts)
 	deco.collision_enabled = false
@@ -136,8 +153,7 @@ func build_map(ts: TileSet) -> Node2D:
 	above.collision_enabled = false
 	above.z_index = 1
 
-	_build_bedroom()
-	_build_corridor()
+	_build_west()
 	_build_town()
 	_add_markers(root)
 	return root
@@ -152,83 +168,121 @@ func _layer(root: Node, layer_name: String, ts: TileSet) -> TileMapLayer:
 	return l
 
 
-# ---------------------------------------------------------------- Recámara
+# ---------------------------------------------------------------- Claro, bosque y río
 
-func _build_bedroom() -> void:
-	# Oscuridad alrededor del cuarto (choca)
-	for x in range(0, CORR_X0):
-		for y in H:
-			ground.set_cell(Vector2i(x, y), CAVE, Vector2i(4, 1))
-	# Piso de madera (incluye la puerta)
-	var wood := [Vector2i(5, 13), Vector2i(6, 13), Vector2i(7, 13), Vector2i(5, 14), Vector2i(6, 14)]
-	for x in range(1, 13):
-		for y in range(17, 27):
-			ground.set_cell(Vector2i(x, y), WOOD, wood[rng.randi_range(0, wood.size() - 1)])
-	for y in [21, 22]:
-		ground.set_cell(Vector2i(13, y), WOOD, Vector2i(6, 13))
-	# Paredes (marco café del pack Ninja Adventure)
-	walls.set_cell(Vector2i(0, 16), WALL, Vector2i(0, 6))
-	walls.set_cell(Vector2i(13, 16), WALL, Vector2i(4, 6))
-	walls.set_cell(Vector2i(0, 27), WALL, Vector2i(0, 10))
-	walls.set_cell(Vector2i(13, 27), WALL, Vector2i(4, 10))
-	for x in range(1, 13):
-		walls.set_cell(Vector2i(x, 16), WALL, Vector2i(3, 6))
-		walls.set_cell(Vector2i(x, 27), WALL, Vector2i(3, 10))
-	for y in range(17, 27):
-		walls.set_cell(Vector2i(0, y), WALL, Vector2i(0, 7))
-		if y == 21 or y == 22:
-			continue                                   # puerta hacia el pasillo
-		var right := Vector2i(4, 7)
-		if y == 20: right = Vector2i(4, 8)             # remate arriba de la puerta
-		if y == 23: right = Vector2i(4, 9)             # remate abajo de la puerta
-		walls.set_cell(Vector2i(13, y), WALL, right)
-	# Cama (sin colisión: el personaje despierta sobre ella)
-	for dx in 2:
-		for dy in 3:
-			deco.set_cell(Vector2i(3 + dx, 17 + dy), BED, Vector2i(dx, dy))
-	# Tapete redondo
-	for dx in 2:
-		for dy in 2:
-			deco.set_cell(Vector2i(7 + dx, 21 + dy), WALL, Vector2i(2 + dx, 7 + dy))
+func _is_open(c: Vector2i) -> bool:
+	## Celdas por donde se camina en la zona de inicio: el claro y el camino al pueblo.
+	var d := (Vector2(c) - CLEARING) / Vector2(7.5, 5.0)
+	if d.length() <= 1.0:
+		return true
+	return c.x >= 15 and c.x < OX and c.y >= PATH_TOP and c.y <= PATH_BOTTOM
 
 
-# ---------------------------------------------------------------- Pasillo sobre el agua
+func _near_open(c: Vector2i) -> bool:
+	## La copa de los árboles junto al camino deja pasar por detrás; las demás chocan.
+	for d in [Vector2i.DOWN, Vector2i.DOWN * 2, Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP]:
+		if _is_open(c + d):
+			return true
+	return false
 
-func _build_corridor() -> void:
-	for x in range(CORR_X0, OX):
-		for y in H:
-			ground.set_cell(Vector2i(x, y), WATER_ANIM, Vector2i(0, 0))
+
+func _is_river(x: int) -> bool:
+	return x >= RIVER_X0 - 1 and x <= RIVER_X1 + 1     # incluye las dos orillas
+
+
+func _build_west() -> void:
 	var grass_details := [Vector2i(8, 1), Vector2i(9, 1), Vector2i(12, 3), Vector2i(13, 3), Vector2i(14, 3), Vector2i(13, 4)]
-	for x in range(CORR_X0, CORR_X1 + 1):
-		var is_end := x == CORR_X1
-		ground.set_cell(Vector2i(x, CORR_TOP), ISLAND, Vector2i(7, 0) if is_end else Vector2i(6, 0))
-		for y in range(CORR_TOP + 1, CORR_BOTTOM):
-			var tile := Vector2i(6, 1)
-			if rng.randf() < 0.18:
-				tile = grass_details[rng.randi_range(0, grass_details.size() - 1)]
-			ground.set_cell(Vector2i(x, y), ISLAND, tile)
-		ground.set_cell(Vector2i(x, CORR_BOTTOM), ISLAND, Vector2i(7, 2) if is_end else Vector2i(6, 2))
-	# Puente de madera hacia el pueblo
-	for x in range(CORR_X1 + 1, OX):
-		for y in [21, 22]:
-			ground.set_cell(Vector2i(x, y), WATER, Vector2i(1, 13))
-	# Árboles naranjas a lo largo del pasillo
-	for x in [18, 27, 44, 53]:           # orilla de arriba: el tronco choca, la copa queda sobre el agua
-		_cave_tree(Vector2i(x, CORR_TOP - 2), x % 2 == 0)
-	for x in [22, 39, 48]:               # orilla de abajo: la copa tapa al jugador al pasar
-		_cave_tree(Vector2i(x, CORR_BOTTOM - 2), x % 2 == 1)
-
-
-func _cave_tree(origin: Vector2i, light: bool) -> void:
-	var from := Vector2i(8, 2) if light else Vector2i(10, 2)
-	for dx in 2:
-		for dy in 3:
-			var cell := origin + Vector2i(dx, dy)
-			var atlas := from + Vector2i(dx, dy)
-			if dy < 2:
-				above.set_cell(cell, CAVE, atlas)
+	for x in OX:
+		for y in H:
+			var c := Vector2i(x, y)
+			if x >= RIVER_X0 and x <= RIVER_X1:
+				ground.set_cell(c, WATER_ANIM, Vector2i(0, 0))          # el río choca
+			elif x == RIVER_X0 - 1 or x == RIVER_X1 + 1:
+				water_base.set_cell(c, WATER_BASE, Vector2i(0, 0))
+				ground.set_cell(c, ISLAND, Vector2i(7, 1) if x < RIVER_X0 else Vector2i(5, 1))
 			else:
-				walls.set_cell(cell, CAVE, atlas)
+				var tile := Vector2i(6, 1)
+				if rng.randf() < 0.14:
+					tile = grass_details[rng.randi_range(0, grass_details.size() - 1)]
+				ground.set_cell(c, ISLAND, tile)
+
+	# Puente de piedra: barandal arriba, dos filas de piso y barandal abajo.
+	for x in range(RIVER_X0 - 1, RIVER_X1 + 2):
+		var col := 0 if x == RIVER_X0 - 1 else (2 if x == RIVER_X1 + 1 else 1)
+		for y in range(BRIDGE_Y0, BRIDGE_Y1 + 1):
+			var row := 0 if y == BRIDGE_Y0 else (2 if y == BRIDGE_Y1 else 1)
+			water_base.set_cell(Vector2i(x, y), WATER_BASE, Vector2i(0, 0))
+			if row == 1:
+				ground.set_cell(Vector2i(x, y), BRIDGE, Vector2i(col, row))
+			else:
+				walls.set_cell(Vector2i(x, y), BRIDGE, Vector2i(col, row))
+
+	_plant_west_forest()
+
+	# Flores de cempasúchil alrededor de donde despierta el jugador
+	for p in [[8, 19], [14, 19], [7, 22], [15, 23], [10, 24], [13, 18], [6, 20], [16, 21]]:
+		deco.set_cell(Vector2i(p[0], p[1]), ISLAND, [Vector2i(12, 3), Vector2i(13, 3), Vector2i(14, 3)][rng.randi_range(0, 2)])
+	# Piedras sueltas a la orilla del camino
+	for p in [[20, 19], [29, 24], [34, 19], [52, 24], [58, 19], [5, 23]]:
+		walls.set_cell(Vector2i(p[0], p[1]), CAVE, [Vector2i(8, 0), Vector2i(9, 0), Vector2i(8, 1), Vector2i(9, 1)][rng.randi_range(0, 3)])
+		west_used[Vector2i(p[0], p[1])] = true
+
+
+func _plant_west_forest() -> void:
+	## Bosque espeso alrededor del claro y del camino. Ningún árbol se encima con otro.
+	var kinds := ["light", "dark", "light", "dark", "autumn", "dead"]
+	for y in range(0, H - 1):
+		for x in range(0, OX):
+			var at_edge := x < 2 or y < 2 or y > H - 5
+			if not at_edge and rng.randf() < 0.12:
+				continue          # algún hueco para que no se vea como cuadrícula (nunca en las orillas)
+			var kind: String = kinds[rng.randi_range(0, kinds.size() - 1)]
+			var size := Vector2i(3, 3) if kind == "autumn" else (Vector2i(2, 2) if kind == "dead" else Vector2i(2, 3))
+			var o := Vector2i(x, y)
+			if o.y + size.y > H or o.x + size.x > OX:
+				continue
+			if _west_free(o, size):
+				_west_tree(o, kind, size)
+	# Tapa cualquier hueco que quede en la orilla izquierda con piedras (chocan).
+	var rocks := [Vector2i(8, 0), Vector2i(9, 0), Vector2i(8, 1), Vector2i(9, 1)]
+	for y in H:
+		for x in 4:
+			var c := Vector2i(x, y)
+			if not west_used.has(c) and not _is_open(c):
+				walls.set_cell(c, CAVE, rocks[rng.randi_range(0, 3)])
+				west_used[c] = true
+
+
+func _west_free(o: Vector2i, size: Vector2i) -> bool:
+	for dx in size.x:
+		for dy in size.y:
+			var c := o + Vector2i(dx, dy)
+			if west_used.has(c) or _is_open(c) or _is_river(c.x):
+				return false
+	return true
+
+
+func _west_tree(o: Vector2i, kind: String, size: Vector2i) -> void:
+	var src := CAVE
+	var from := Vector2i(8, 2)
+	match kind:
+		"dark": from = Vector2i(10, 2)
+		"autumn":
+			src = NATURE
+			from = Vector2i(9, 18)
+		"dead":
+			src = NATURE
+			from = Vector2i(4, 0)
+	for dx in size.x:
+		for dy in size.y:
+			var cell := o + Vector2i(dx, dy)
+			west_used[cell] = true
+			if dy < size.y - 1:
+				above.set_cell(cell, src, from + Vector2i(dx, dy))     # copa: tapa al jugador
+				if not _near_open(cell):
+					walls.set_cell(cell, BLOCK, Vector2i(0, 0))        # dentro del bosque no se puede pasar
+			else:
+				walls.set_cell(cell, src, from + Vector2i(dx, dy))     # tronco: choca
 
 
 # ---------------------------------------------------------------- Pueblo
@@ -258,7 +312,13 @@ func _build_town() -> void:
 		for y in H:
 			var c := _v(x, y)
 			if water.has(c):
-				ground.set_cell(c, WATER, _water_tile(c))
+				# Misma agua animada que el río; la orilla del pack Ninja va encima.
+				water_base.set_cell(c, WATER_BASE, Vector2i(0, 0))
+				var t := _water_tile(c)
+				if t == Vector2i(1, 7):
+					ground.set_cell(c, WATER_ANIM, Vector2i(0, 0))
+				else:
+					ground.set_cell(c, SHORE, t - Vector2i(0, 6))
 			elif path.has(c):
 				ground.set_cell(c, FLOOR, _path_tile(c))
 			else:
@@ -360,7 +420,7 @@ func _tree(c: Vector2i, kind: String, margin := 1, solid := false) -> bool:
 		"pine": [Vector2i(2, 0), Vector2i(2, 2)],
 		"round": [Vector2i(0, 0), Vector2i(2, 2)],
 		"autumn": [Vector2i(9, 18), Vector2i(3, 3)],
-		"big": [Vector2i(4, 18), Vector2i(2, 3)],
+		"big": [Vector2i(3, 18), Vector2i(3, 3)],
 	}
 	var from: Vector2i = specs[kind][0]
 	var size: Vector2i = specs[kind][1]
@@ -436,9 +496,8 @@ func _add_markers(root: Node2D) -> void:
 	root.add_child(markers)
 	markers.owner = root
 	var spots := {
-		"Player": Vector2(4 * T, 17 * T + 14),           # en la almohada de la cama
-		"Guide": Vector2(11 * T + 8, 22 * T + 14),       # junto a la puerta del cuarto
-		"Skeleton": Vector2(34 * T + 8, 21 * T + 14),    # a la mitad del pasillo
+		"Player": Vector2(CLEARING.x * T + 8, CLEARING.y * T + 12),   # dormido en el claro
+		"Guide": Vector2(19 * T + 8, 22 * T + 14),                      # llega por el camino
 		"Sign": Vector2((OX + 4) * T + 8, 20 * T + 14),  # entrada del pueblo
 		"Mercader": Vector2((OX + 36) * T + 8, 14 * T + 14),
 		"Cocinero": Vector2((OX + 64) * T + 8, 14 * T + 14),
@@ -483,12 +542,31 @@ func build_sprite_frames() -> void:
 		_anim(sf, wiz, "walk_" + dirs[i], _row(4 + i), 48, Vector2i.ZERO, 8.0)
 	ResourceSaver.save(sf, "res://world/npcs/sprites/guia_frames.tres")
 
-	# Esqueleto: 4×4 cuadros de 16×16; columna 1 = de frente.
-	var skel: Texture2D = load("res://world/npcs/sprites/esqueleto.png")
+	# Alma (enemigo): esqueleto de Dark Fantasy Monsters (jfranci_px), tiras de 4 cuadros de 16×16.
+	#   El de lado mira a la izquierda; para la derecha el script lo voltea (flip_h).
 	sf = SpriteFrames.new()
 	sf.remove_animation("default")
-	_anim(sf, skel, "idle_down", [Vector2i(1, 0), Vector2i(1, 2)], 16, Vector2i.ZERO, 2.0)
-	ResourceSaver.save(sf, "res://world/npcs/sprites/esqueleto_frames.tres")
+	var strips := {
+		"walk_down": ["movefront", 7.0, true], "walk_up": ["moveback", 7.0, true],
+		"walk_side": ["moveside", 7.0, true], "attack": ["attackfront", 12.0, false],
+		"death": ["deathfront", 8.0, false],
+	}
+	for anim in strips:
+		var tex: Texture2D = load("res://world/enemies/sprites/esqueleto_%s.png" % strips[anim][0])
+		_anim(sf, tex, anim, [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)], 16, Vector2i.ZERO, strips[anim][1])
+		sf.set_animation_loop(anim, strips[anim][2])
+	ResourceSaver.save(sf, "res://world/enemies/alma_frames.tres")
+
+	# NPCs del pueblo (pack Ninja Adventure, CC0): columnas abajo, arriba, izquierda, derecha.
+	for npc in ["dona_clara", "panadero", "panteonero"]:
+		var tex: Texture2D = load("res://world/npcs/sprites/%s.png" % npc)
+		sf = SpriteFrames.new()
+		sf.remove_animation("default")
+		var order := ["down", "up", "left", "right"]
+		for i in 4:
+			_anim(sf, tex, "idle_" + order[i], [Vector2i(i, 0)], 16, Vector2i.ZERO, 1.0)
+			_anim(sf, tex, "walk_" + order[i], [Vector2i(i, 0), Vector2i(i, 1), Vector2i(i, 2), Vector2i(i, 3)], 16, Vector2i.ZERO, 8.0)
+		ResourceSaver.save(sf, "res://world/npcs/sprites/%s_frames.tres" % npc)
 
 	# Cartel de bienvenida: poste del TilesetElement (16×32), recorrido para que la base quede en los pies.
 	var element: Texture2D = load("res://common/art/ninja/tilesets/TilesetElement.png")

@@ -10,7 +10,13 @@ uniform int palette_size : hint_range(1, 16) = 8;
 uniform int mode : hint_range(0, 1) = 1;
 uniform float strength : hint_range(0.0, 1.0) = 1.0;   // 0 = original, 1 = solo paleta
 uniform float contrast : hint_range(0.5, 2.0) = 1.15;  // solo para el modo por brillo
-uniform float saturation : hint_range(0.0, 2.0) = 1.4; // >1 = colores más vivos (efecto atardecer)
+uniform float saturation : hint_range(0.0, 2.0) = 1.0; // >1 = colores más vivos (efecto atardecer)
+
+// --- Atardecer: luz cálida que va de naranja (arriba) a lila (abajo) y orillas oscuras ---
+uniform float sunset : hint_range(0.0, 1.0) = 0.55;          // 0 = sin atardecer
+uniform vec4 sky_top : source_color = vec4(1.0, 0.55, 0.32, 1.0);
+uniform vec4 sky_bottom : source_color = vec4(0.55, 0.36, 0.62, 1.0);
+uniform float vignette : hint_range(0.0, 1.0) = 0.5;        // oscurece las esquinas
 
 float luma(vec3 c) {
 	return dot(c, vec3(0.299, 0.587, 0.114));
@@ -60,5 +66,13 @@ void fragment() {
 	// Saturación: separa el color de su brillo y lo intensifica.
 	float l = luma(color);
 	color = clamp(vec3(l) + (color - vec3(l)) * saturation, 0.0, 1.0);
+	// Luz de atardecer (mezcla tipo "soft light": tiñe sin quemar los claros).
+	vec3 tint = mix(sky_top.rgb, sky_bottom.rgb, SCREEN_UV.y);
+	vec3 lit = mix(2.0 * color * tint, 1.0 - 2.0 * (1.0 - color) * (1.0 - tint), step(0.5, color));
+	color = mix(color, lit, sunset);
+	// Viñeta: las orillas de la pantalla se oscurecen, como luz que se va.
+	vec2 c = SCREEN_UV - 0.5;
+	c.x *= 1.6;
+	color *= 1.0 - vignette * smoothstep(0.35, 0.95, length(c));
 	COLOR = vec4(color, 1.0);
 }

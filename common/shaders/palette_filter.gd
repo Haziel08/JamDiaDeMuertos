@@ -35,9 +35,32 @@ const SHADER := preload("res://common/shaders/palette_filter.gdshader")
 		_apply()
 
 ## Intensidad de los colores: 1 = normal, más alto = más vivos (atardecer), 0 = blanco y negro.
-@export_range(0.0, 2.0, 0.05) var saturation: float = 1.4:
+@export_range(0.0, 2.0, 0.05) var saturation: float = 1.0:
 	set(value):
 		saturation = value
+		_apply()
+
+
+## Atardecer: 0 = luz normal, 1 = muy naranja. Arriba naranja y abajo lila.
+@export_range(0.0, 1.0, 0.05) var sunset: float = 0.55:
+	set(value):
+		sunset = value
+		_apply()
+
+@export var sky_top: Color = Color(1.0, 0.55, 0.32):
+	set(value):
+		sky_top = value
+		_apply()
+
+@export var sky_bottom: Color = Color(0.55, 0.36, 0.62):
+	set(value):
+		sky_bottom = value
+		_apply()
+
+## Oscurece las esquinas de la pantalla (0 = nada).
+@export_range(0.0, 1.0, 0.05) var vignette: float = 0.5:
+	set(value):
+		vignette = value
 		_apply()
 
 
@@ -63,3 +86,7 @@ func _apply() -> void:
 	mat.set_shader_parameter("strength", strength)
 	mat.set_shader_parameter("contrast", contrast)
 	mat.set_shader_parameter("saturation", saturation)
+	mat.set_shader_parameter("sunset", sunset)
+	mat.set_shader_parameter("sky_top", sky_top)
+	mat.set_shader_parameter("sky_bottom", sky_bottom)
+	mat.set_shader_parameter("vignette", vignette)
