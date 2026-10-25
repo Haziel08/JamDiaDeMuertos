@@ -1,0 +1,19 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://common/art/ninja/tilesets/TilesetElement.png" id="1_sgskd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n66x7"]
+atlas = ExtResource("1_sgskd")
+region = Rect2(96, 48, 16, 32)
+margin = Rect2(0, 0, 0, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n66x7")
+}],
+"loop": 1,
+"name": &"idle_down",
+"speed": 5.0
+}]

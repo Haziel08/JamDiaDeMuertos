@@ -11,6 +11,11 @@
 [ext_resource type="Resource" uid="uid://ci2au82mdeltb" path="res://world/npcs/dialogues/panteonero.dialogue" id="7_ov2xu"]
 [ext_resource type="Resource" uid="uid://2tlsk5cviamu" path="res://world/npcs/dialogues/gate.dialogue" id="8_fyhu2"]
 [ext_resource type="Script" uid="uid://w8w40uthco0m" path="res://common/shaders/palette_filter.gd" id="9_ov2xu"]
+[ext_resource type="SpriteFrames" path="res://world/npcs/sprites/guia_frames.tres" id="20_guia"]
+[ext_resource type="SpriteFrames" path="res://world/npcs/sprites/esqueleto_frames.tres" id="21_esq"]
+[ext_resource type="SpriteFrames" path="res://world/npcs/sprites/cartel_frames.tres" id="22_cartel"]
+[ext_resource type="Resource" path="res://world/npcs/dialogues/esqueleto.dialogue" id="23_esqd"]
+[ext_resource type="Resource" path="res://world/npcs/dialogues/cartel.dialogue" id="24_carteld"]
 
 [sub_resource type="Shader" id="Shader_ov2xu"]
 code = "shader_type canvas_item;
@@ -86,15 +91,16 @@ shader_parameter/contrast = 1.1
 script = ExtResource("1_7g83o")
 
 [node name="Map" parent="." unique_id=1046458711 instance=ExtResource("2_mad0u")]
-position = Vector2(0, 5)
 
 [node name="Entities" type="Node2D" parent="." unique_id=1857332735]
+y_sort_enabled = true
 
 [node name="Player" parent="Entities" unique_id=442972059 instance=ExtResource("1_kqs1s")]
 position = Vector2(118, 352)
 
 [node name="Guide" parent="Entities" unique_id=410754066 instance=ExtResource("4_fn3g3")]
-position = Vector2(371, 353)
+position = Vector2(184, 366)
+sprite_frames = ExtResource("20_guia")
 
 [node name="Placeholder" parent="Entities/Guide" index="0" unique_id=710704039]
 color = Color(0.9098039, 0.9098039, 0.9098039, 1)
@@ -120,6 +126,16 @@ dialogue = ExtResource("7_ov2xu")
 [node name="Placeholder" parent="Entities/Panteonero" index="0" unique_id=710704039]
 color = Color(0.3529412, 0.6431373, 0.4117647, 1)
 
+[node name="Skeleton" parent="Entities" unique_id=1597522401 instance=ExtResource("4_fn3g3")]
+position = Vector2(552, 350)
+dialogue = ExtResource("23_esqd")
+sprite_frames = ExtResource("21_esq")
+
+[node name="Sign" parent="Entities" unique_id=1597522402 instance=ExtResource("4_fn3g3")]
+position = Vector2(1096, 334)
+dialogue = ExtResource("24_carteld")
+sprite_frames = ExtResource("22_cartel")
+
 [node name="Gate" parent="Entities" unique_id=1597522351 instance=ExtResource("4_fn3g3")]
 position = Vector2(1438, 355)
 dialogue = ExtResource("8_fyhu2")
@@ -137,9 +153,6 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("9_ov2xu")
 colors = PackedColorArray(0.1254902, 0.1254902, 0.1254902, 1, 0.2, 0.10980392, 0.09019608, 1, 0.22352941, 0.22352941, 0.22352941, 1, 0.3372549, 0.19607843, 0.14901961, 1, 0.44705883, 0.34901962, 0.3372549, 1, 0.6745098, 0.41960785, 0.14901961, 1, 0.73333335, 0.49803922, 0.34117648, 1, 0.9647059, 0.8039216, 0.14901961, 1)
-strength = 1.0
-contrast = 1.1
-saturation = null
 
 [node name="Hud" parent="." unique_id=1704828479 instance=ExtResource("4_1lgw5")]
 

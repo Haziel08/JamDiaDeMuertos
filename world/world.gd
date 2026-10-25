@@ -16,6 +16,8 @@ const REWARD_DIALOGUES := {
 @onready var guide: Node2D = $Entities/Guide
 @onready var hud: CanvasLayer = $Hud
 
+var _welcomed: bool = false  # ya se mostró "Bienvenido al pueblo"
+
 
 func _ready() -> void:
 	_place_at_markers()
@@ -47,6 +49,19 @@ func _unhandled_input(event: InputEvent) -> void:
 		print("[Prueba] Luces: ", GameState.get_light_count())
 
 
+func _process(_delta: float) -> void:
+	# Al cruzar el puentecito hacia el pueblo aparece el aviso de bienvenida (una vez).
+	if _welcomed:
+		return
+	var sign_marker := get_node_or_null("Map/Markers/Sign") as Node2D
+	if sign_marker and player.global_position.x > sign_marker.global_position.x - 40.0:
+		_welcomed = true
+		hud.show_hint("Bienvenido al pueblo")
+		await get_tree().create_timer(3.0, false).timeout
+		if is_inside_tree():
+			hud.hide_hint()
+
+
 func _show_controls_tutorial() -> void:
 	## Pequeños avisos de controles después de la intro.
 	hud.show_hint("Muévete con WASD o las flechas")
@@ -69,11 +84,17 @@ func _wait(seconds: float) -> bool:
 
 
 func guide_approach() -> void:
-	## Se llama desde intro.dialogue: el guía camina hacia el jugador.
+	## Se llama desde intro.dialogue: el guía camina hasta el jugador y se miran.
 	var target := player.global_position + Vector2(24, 0)
+	var walk_dir := "left" if target.x < guide.global_position.x else "right"
+	if guide.has_method("play_if_exists"):
+		guide.call("play_if_exists", "walk_" + walk_dir)
 	var tween := create_tween()
-	tween.tween_property(guide, "global_position", target, 1.2)
+	tween.tween_property(guide, "global_position", target, 1.6)
 	await tween.finished
+	if guide.has_method("face_towards"):
+		guide.call("face_towards", player.global_position)
+	player.facing = Vector2.RIGHT   # el jugador voltea a ver al guía
 
 
 func _play_reward() -> void:
@@ -124,11 +145,14 @@ func _place_at_markers() -> void:
 
 func _set_camera_limits() -> void:
 	## La cámara no muestra nada fuera del suelo pintado.
+	## Usa posiciones globales, así funciona aunque el nodo Map no esté en (0, 0).
 	var camera: Camera2D = player.get_node("Camera2D")
 	var used_rect := ground.get_used_rect()
-	var tile_size := ground.tile_set.tile_size
-	camera.limit_left = used_rect.position.x * tile_size.x
-	camera.limit_top = used_rect.position.y * tile_size.y
-	camera.limit_right = used_rect.end.x * tile_size.x
-	camera.limit_bottom = used_rect.end.y * tile_size.y
+	var half_tile := Vector2(ground.tile_set.tile_size) / 2.0
+	var top_left := ground.to_global(ground.map_to_local(used_rect.position) - half_tile)
+	var bottom_right := ground.to_global(ground.map_to_local(used_rect.end) - half_tile)
+	camera.limit_left = int(top_left.x)
+	camera.limit_top = int(top_left.y)
+	camera.limit_right = int(bottom_right.x)
+	camera.limit_bottom = int(bottom_right.y)
 	camera.reset_smoothing()

@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://wcpcl38uyj1n"
+path="res://.godot/imported/esqueleto.dialogue-9eaaf1df87f34a71403c475f1868d3d6.tres"
+
+[deps]
+
+source_file="res://world/npcs/dialogues/esqueleto.dialogue"
+dest_files=["res://.godot/imported/esqueleto.dialogue-9eaaf1df87f34a71403c475f1868d3d6.tres"]
+
+[params]
+
+defaults=true

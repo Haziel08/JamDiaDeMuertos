@@ -1,0 +1,25 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://world/npcs/sprites/esqueleto.png" id="1_aesbi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lp3i8"]
+atlas = ExtResource("1_aesbi")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k8atu"]
+atlas = ExtResource("1_aesbi")
+region = Rect2(16, 32, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lp3i8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k8atu")
+}],
+"loop": 1,
+"name": &"idle_down",
+"speed": 2.0
+}]

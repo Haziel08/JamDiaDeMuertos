@@ -1,0 +1,13 @@
+# Esqueleto del pasillo (texto provisional: cámbienlo a su gusto)
+
+~ start
+if GameState.has_met("esqueleto")
+	Esqueleto: ¿Sigues aquí? El pueblo está al otro lado del puentecito. No te detengas.
+	=> END
+$> GameState.mark_met("esqueleto")
+Esqueleto: ¡Uy! ¿Un alma nueva? Hacía mucho que nadie pasaba por este camino.
+Tú: ¿Tú también estás perdido?
+Esqueleto: Perdido no… solo esperando. Siempre hay alguien a quien esperar.
+Esqueleto: Sigue derecho y cruza el puentecito. El pueblo está del otro lado.
+Esqueleto: Y si ves que las luces se apagan… camina más rápido.
+=> END
