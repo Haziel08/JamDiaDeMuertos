@@ -30,7 +30,7 @@ func _ready() -> void:
 
 	if not GameState.intro_done:
 		player.can_move = false
-		player.sprite.rotation_degrees = -90.0   # despierta acostado en el pasto
+		player.sleeping = true   # despierta acostado en el pasto
 	await get_tree().create_timer(0.5).timeout  # deja terminar el fundido
 
 	if not GameState.intro_done:
@@ -86,9 +86,9 @@ func _wait(seconds: float) -> bool:
 
 func guide_approach() -> void:
 	## Se llama desde intro.dialogue: el jugador se levanta, el guía camina hasta él y se miran.
-	var stand := create_tween()
-	stand.tween_property(player.sprite, "rotation_degrees", 0.0, 0.35)
-	stand.parallel().tween_property(player.sprite, "position:y", -12.0, 0.18)
+	player.sleeping = false
+	var stand := create_tween()   # saltito al levantarse
+	stand.tween_property(player.sprite, "position:y", -12.0, 0.15)
 	stand.tween_property(player.sprite, "position:y", -8.0, 0.15)
 	var target := player.global_position + Vector2(24, 0)
 	var walk_dir := "left" if target.x < guide.global_position.x else "right"

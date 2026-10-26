@@ -14,6 +14,7 @@ const DIRECTIONS := {
 }
 
 var can_move: bool = true
+var sleeping: bool = false  # al inicio: dormido en el pasto (animación "sleep")
 var facing: Vector2 = Vector2.DOWN  # última dirección a la que miró
 
 var _held_directions: Array[Vector2] = []  # teclas presionadas, en orden
@@ -54,6 +55,9 @@ func _get_input_direction() -> Vector2:
 func _update_animation(is_moving: bool) -> void:
 	if sprite.sprite_frames == null:
 		return  # todavía no hay arte
+	if sleeping and sprite.sprite_frames.has_animation("sleep"):
+		sprite.play("sleep")
+		return
 
 	# Nombres esperados: idle_down, idle_up, idle_left, idle_right,
 	#                    walk_down, walk_up, walk_left, walk_right

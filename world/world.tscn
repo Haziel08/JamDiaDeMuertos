@@ -111,6 +111,7 @@ color = Color(0.9098039, 0.9098039, 0.9098039, 1)
 position = Vector2(685, 258)
 dialogue = ExtResource("5_4papg")
 sprite_frames = ExtResource("21_merc")
+sprite_height = 24.0
 
 [node name="Placeholder" parent="Entities/Mercader" index="0" unique_id=710704039]
 color = Color(0.9490196, 0.7882353, 0.29803923, 1)
@@ -119,6 +120,7 @@ color = Color(0.9490196, 0.7882353, 0.29803923, 1)
 position = Vector2(983, 237)
 dialogue = ExtResource("6_fyhu2")
 sprite_frames = ExtResource("25_coci")
+sprite_height = 24.0
 
 [node name="Placeholder" parent="Entities/Cocinero" index="0" unique_id=710704039]
 color = Color(0.8509804, 0.2901961, 0.2901961, 1)

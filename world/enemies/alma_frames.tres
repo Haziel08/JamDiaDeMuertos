@@ -1,10 +1,10 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://c1uoopp8mxvej"]
 
-[ext_resource type="Texture2D" path="res://world/enemies/sprites/esqueleto_attackfront.png" id="1_fy1k1"]
-[ext_resource type="Texture2D" path="res://world/enemies/sprites/esqueleto_deathfront.png" id="2_7u4u5"]
-[ext_resource type="Texture2D" path="res://world/enemies/sprites/esqueleto_movefront.png" id="3_x54c2"]
-[ext_resource type="Texture2D" path="res://world/enemies/sprites/esqueleto_moveside.png" id="4_ily4q"]
-[ext_resource type="Texture2D" path="res://world/enemies/sprites/esqueleto_moveback.png" id="5_87fc7"]
+[ext_resource type="Texture2D" uid="uid://bn7mujum2dcva" path="res://world/enemies/sprites/esqueleto_attackfront.png" id="1_fy1k1"]
+[ext_resource type="Texture2D" uid="uid://dujpc2trhla0g" path="res://world/enemies/sprites/esqueleto_deathfront.png" id="2_7u4u5"]
+[ext_resource type="Texture2D" uid="uid://b76m0s7ijpcay" path="res://world/enemies/sprites/esqueleto_movefront.png" id="3_x54c2"]
+[ext_resource type="Texture2D" uid="uid://2i31evei132o" path="res://world/enemies/sprites/esqueleto_moveside.png" id="4_ily4q"]
+[ext_resource type="Texture2D" uid="uid://cbogq732labj3" path="res://world/enemies/sprites/esqueleto_moveback.png" id="5_87fc7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7kx7g"]
 atlas = ExtResource("1_fy1k1")

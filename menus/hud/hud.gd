@@ -2,7 +2,7 @@ extends CanvasLayer
 ## HUD del mundo: contador de luces y botón de pausa.
 
 @onready var lights_label: Label = %LightsLabel
-@onready var pause_button: Button = %PauseButton
+@onready var pause_button: BaseButton = %PauseButton
 @onready var hint_label: Label = %HintLabel
 
 var _hint_tween: Tween

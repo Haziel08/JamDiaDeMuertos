@@ -3,6 +3,24 @@
 [ext_resource type="Script" uid="uid://c43esp4vcnalk" path="res://menus/main_menu/main_menu.gd" id="1_vu5tu"]
 [ext_resource type="PackedScene" uid="uid://cu0n1t6a06npe" path="res://menus/credits/credits_menu.tscn" id="2_ml8bw"]
 [ext_resource type="PackedScene" uid="uid://cus0nan5bw0b1" path="res://menus/options/options_menu.tscn" id="3_oic2i"]
+[ext_resource type="Texture2D" uid="uid://cgirhfjc1epab" path="res://menus/main_menu/fondo_menu.png" id="4_fondo"]
+[ext_resource type="Texture2D" uid="uid://uxjnxeldh3io" path="res://menus/main_menu/titulo.png" id="5_titulo"]
+[ext_resource type="Texture2D" uid="uid://mpgioi4ft3jq" path="res://menus/main_menu/petalos.png" id="6_petalos"]
+[ext_resource type="Script" uid="uid://dipo5wkn7piwk" path="res://common/ui/stone_button.gd" id="7_stone"]
+[ext_resource type="Texture2D" uid="uid://f5kt0ug2p7kf" path="res://common/ui/botones/jugar.png" id="8_jugar"]
+[ext_resource type="Texture2D" uid="uid://17px720dco7a" path="res://common/ui/botones/jugar_presionado.png" id="9_jugar_p"]
+[ext_resource type="Texture2D" uid="uid://cr7piqt035e81" path="res://common/ui/botones/opciones.png" id="10_opc"]
+[ext_resource type="Texture2D" uid="uid://dih63ougy7a5j" path="res://common/ui/botones/opciones_presionado.png" id="11_opc_p"]
+[ext_resource type="Texture2D" uid="uid://bdn4xelaogd64" path="res://common/ui/botones/creditos.png" id="12_cred"]
+[ext_resource type="Texture2D" uid="uid://ctvndbvsw7oo8" path="res://common/ui/botones/creditos_presionado.png" id="13_cred_p"]
+[ext_resource type="Texture2D" uid="uid://b6c6usggd2hnn" path="res://common/ui/botones/salir.png" id="14_salir"]
+[ext_resource type="Texture2D" uid="uid://c4qxdx851hcgp" path="res://common/ui/botones/salir_presionado.png" id="15_salir_p"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_petalos"]
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 1
+particles_anim_loop = false
 
 [node name="MainMenu" type="Control" unique_id=856570084]
 layout_mode = 3
@@ -13,16 +31,38 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_vu5tu")
 
-[node name="Background" type="ColorRect" parent="." unique_id=7485818]
+[node name="Background" type="TextureRect" parent="." unique_id=7485818]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.105882354, 0.0627451, 0.1882353, 1)
+texture = ExtResource("4_fondo")
+stretch_mode = 6
 
-[node name="Center" type="CenterContainer" parent="." unique_id=1946620045]
+[node name="Petals" type="CPUParticles2D" parent="." unique_id=7485820]
+material = SubResource("CanvasItemMaterial_petalos")
+position = Vector2(160, -10)
+amount = 40
+texture = ExtResource("6_petalos")
+lifetime = 9.0
+preprocess = 9.0
+emission_shape = 3
+emission_rect_extents = Vector2(180, 4)
+direction = Vector2(0, 1)
+spread = 20.0
+gravity = Vector2(8, 10)
+initial_velocity_min = 10.0
+initial_velocity_max = 22.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+angle_max = 360.0
+scale_amount_min = 0.8
+scale_amount_max = 1.2
+anim_offset_max = 1.0
+
+[node name="Center" type="Control" parent="." unique_id=1946620045]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -30,43 +70,54 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="Content" type="VBoxContainer" parent="Center" unique_id=394032628]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="Title" type="Label" parent="Center/Content" unique_id=1884842090]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Jam Día de Muertos"
-horizontal_alignment = 1
-
-[node name="Buttons" type="VBoxContainer" parent="Center/Content" unique_id=112827815]
-layout_mode = 2
-
-[node name="PlayButton" type="Button" parent="Center/Content/Buttons" unique_id=2027472552]
+[node name="Title" type="TextureRect" parent="Center" unique_id=1884842090]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(96, 0)
-layout_mode = 2
-text = "Jugar"
+layout_mode = 0
+offset_left = 14.0
+offset_top = 4.0
+offset_right = 310.0
+offset_bottom = 81.0
+texture = ExtResource("5_titulo")
 
-[node name="OptionsButton" type="Button" parent="Center/Content/Buttons" unique_id=33421378]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(96, 0)
-layout_mode = 2
-text = "Opciones"
+[node name="Buttons" type="HFlowContainer" parent="Center" unique_id=112827815]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 82.0
+offset_right = 261.0
+offset_bottom = 152.0
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 6
+alignment = 1
 
-[node name="CreditsButton" type="Button" parent="Center/Content/Buttons" unique_id=921996502]
+[node name="PlayButton" type="TextureButton" parent="Center/Buttons" unique_id=2027472552]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
-text = "Créditos"
+texture_normal = ExtResource("8_jugar")
+texture_pressed = ExtResource("9_jugar_p")
+script = ExtResource("7_stone")
 
-[node name="QuitButton" type="Button" parent="Center/Content/Buttons" unique_id=860873870]
+[node name="OptionsButton" type="TextureButton" parent="Center/Buttons" unique_id=33421378]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
-text = "Salir"
+texture_normal = ExtResource("10_opc")
+texture_pressed = ExtResource("11_opc_p")
+script = ExtResource("7_stone")
+
+[node name="CreditsButton" type="TextureButton" parent="Center/Buttons" unique_id=921996502]
+unique_name_in_owner = true
+layout_mode = 2
+texture_normal = ExtResource("12_cred")
+texture_pressed = ExtResource("13_cred_p")
+script = ExtResource("7_stone")
+
+[node name="QuitButton" type="TextureButton" parent="Center/Buttons" unique_id=860873870]
+unique_name_in_owner = true
+layout_mode = 2
+texture_normal = ExtResource("14_salir")
+texture_pressed = ExtResource("15_salir_p")
+script = ExtResource("7_stone")
 
 [node name="CreditsMenu" parent="." unique_id=27006497 instance=ExtResource("2_ml8bw")]
 unique_name_in_owner = true

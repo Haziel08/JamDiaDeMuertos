@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://b4b55qnvahy1s"]
 
 [ext_resource type="Script" uid="uid://bs1ecy8fhv5gi" path="res://menus/hud/hud.gd" id="1_rkfdl"]
+[ext_resource type="Script" path="res://common/ui/stone_button.gd" id="2_stone"]
+[ext_resource type="Texture2D" path="res://common/ui/botones/icono_pausa.png" id="3_pausa"]
+[ext_resource type="Texture2D" path="res://common/ui/botones/icono_pausa_presionado.png" id="4_pausa_p"]
 
 [node name="Hud" type="CanvasLayer" unique_id=1704828479]
 layer = 10
@@ -34,11 +37,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="PauseButton" type="Button" parent="Margin/HBoxContainer" unique_id=1587202094]
+[node name="PauseButton" type="TextureButton" parent="Margin/HBoxContainer" unique_id=1587202094]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-text = "Pausa"
+texture_normal = ExtResource("3_pausa")
+texture_pressed = ExtResource("4_pausa_p")
+script = ExtResource("2_stone")
 
 [node name="HintLabel" type="Label" parent="." unique_id=1050564913]
 unique_name_in_owner = true

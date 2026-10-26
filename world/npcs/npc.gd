@@ -7,9 +7,16 @@ extends StaticBody2D
 @export var start_cue: String = "start"
 ## Animaciones del NPC. Necesita al menos "idle_down"; si tiene idle_left/right/up, voltea al hablar.
 @export var sprite_frames: SpriteFrames
+## Altura del dibujo (para pararlo en el suelo). 16 para sprites de 16×16, 24 para los de 24×24.
+@export var sprite_height: float = 16.0
+## Qué tan arriba sale la tecla "E" (desde los pies). 0 = automático según el dibujo.
+@export var prompt_height: float = 0.0
 
-@onready var prompt: Label = $Prompt
+const KEY_E := preload("res://common/ui/tecla_e.png")
+
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+var prompt: Sprite2D   # tecla "E" flotando arriba de la cabeza
+var _prompt_tween: Tween
 
 var _player_near: bool = false
 var _player: Node2D
@@ -17,11 +24,13 @@ var _can_talk_at: int = 0  # evita reabrir el diálogo con la misma tecla que lo
 
 
 func _ready() -> void:
-	prompt.hide()
+	$Prompt.hide()   # la etiqueta vieja ya no se usa
+	sprite.position.y = -sprite_height / 2.0
 	if sprite_frames:
 		sprite.sprite_frames = sprite_frames
 		sprite.play("idle_down")
 		$Placeholder.hide()
+	_create_prompt()
 	$InteractionArea.body_entered.connect(_on_body_entered)
 	$InteractionArea.body_exited.connect(_on_body_exited)
 	DialogueManager.dialogue_ended.connect(_on_dialogue_ended)
@@ -34,7 +43,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event.is_action_pressed("interact"):
 		get_viewport().set_input_as_handled()
-		prompt.hide()
+		_show_prompt(false)
 		if _player:
 			face_towards(_player.global_position)
 		DialogueManager.show_dialogue_balloon(dialogue, start_cue)
@@ -58,15 +67,46 @@ func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player_near = true
 		_player = body
-		prompt.visible = dialogue != null
+		_show_prompt(dialogue != null)
 
 
 func _on_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player_near = false
-		prompt.hide()
+		_show_prompt(false)
 
 
 func _on_dialogue_ended(_resource: DialogueResource) -> void:
 	_can_talk_at = Time.get_ticks_msec() + 300
-	prompt.visible = _player_near and dialogue != null
+	_show_prompt(_player_near and dialogue != null)
+
+
+func _create_prompt() -> void:
+	prompt = Sprite2D.new()
+	prompt.texture = KEY_E
+	prompt.z_index = 10
+	var h := prompt_height if prompt_height > 0.0 else sprite_height + 10.0
+	prompt.position = Vector2(0, -h)
+	prompt.visible = false
+	add_child(prompt)
+
+
+func _show_prompt(value: bool) -> void:
+	## Muestra la tecla "E" con un saltito; mientras se ve, flota arriba y abajo (_process).
+	if prompt == null or prompt.visible == value:
+		return
+	prompt.visible = value
+	if not value:
+		return
+	if _prompt_tween:
+		_prompt_tween.kill()
+	prompt.scale = Vector2(0.4, 0.4)
+	_prompt_tween = create_tween()
+	_prompt_tween.tween_property(prompt, "scale", Vector2.ONE, 0.18) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+
+func _process(_delta: float) -> void:
+	if prompt and prompt.visible:
+		var h := prompt_height if prompt_height > 0.0 else sprite_height + 10.0
+		prompt.position.y = -h + round(sin(Time.get_ticks_msec() / 220.0) * 1.5)

@@ -3,9 +3,9 @@ extends CanvasLayer
 ## Pausa todo el juego excepto este menú.
 
 @onready var main_panel: Control = %Center
-@onready var resume_button: Button = %ResumeButton
-@onready var options_button: Button = %OptionsButton
-@onready var main_menu_button: Button = %MainMenuButton
+@onready var resume_button: BaseButton = %ResumeButton
+@onready var options_button: BaseButton = %OptionsButton
+@onready var main_menu_button: BaseButton = %MainMenuButton
 @onready var options_menu: Control = %OptionsMenu
 
 

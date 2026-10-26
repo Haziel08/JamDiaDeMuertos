@@ -2,6 +2,13 @@
 
 [ext_resource type="Script" uid="uid://dcy370tx8mgng" path="res://menus/pause/pause_menu.gd" id="1_2161m"]
 [ext_resource type="PackedScene" uid="uid://cus0nan5bw0b1" path="res://menus/options/options_menu.tscn" id="1_i3u0a"]
+[ext_resource type="Script" path="res://common/ui/stone_button.gd" id="2_stone"]
+[ext_resource type="Texture2D" path="res://common/ui/botones/jugar.png" id="3_jugar"]
+[ext_resource type="Texture2D" path="res://common/ui/botones/jugar_presionado.png" id="4_jugar_p"]
+[ext_resource type="Texture2D" path="res://common/ui/botones/opciones.png" id="5_opc"]
+[ext_resource type="Texture2D" path="res://common/ui/botones/opciones_presionado.png" id="6_opc_p"]
+[ext_resource type="Texture2D" path="res://common/ui/botones/menu.png" id="7_menu"]
+[ext_resource type="Texture2D" path="res://common/ui/botones/menu_presionado.png" id="8_menu_p"]
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1878973421 groups=["pause_menu"]]
 process_mode = 3
@@ -37,29 +44,36 @@ theme_override_constants/margin_bottom = 8
 
 [node name="VBox" type="VBoxContainer" parent="Dim/Center/Panel/Margin" unique_id=1013485483]
 layout_mode = 2
+theme_override_constants/separation = 4
 
 [node name="Title" type="Label" parent="Dim/Center/Panel/Margin/VBox" unique_id=1303075499]
 layout_mode = 2
 text = "Pausa"
 horizontal_alignment = 1
 
-[node name="ResumeButton" type="Button" parent="Dim/Center/Panel/Margin/VBox" unique_id=1082239199]
+[node name="ResumeButton" type="TextureButton" parent="Dim/Center/Panel/Margin/VBox" unique_id=1082239199]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
-text = "Continuar"
+size_flags_horizontal = 4
+texture_normal = ExtResource("3_jugar")
+texture_pressed = ExtResource("4_jugar_p")
+script = ExtResource("2_stone")
 
-[node name="OptionsButton" type="Button" parent="Dim/Center/Panel/Margin/VBox" unique_id=1458212481]
+[node name="OptionsButton" type="TextureButton" parent="Dim/Center/Panel/Margin/VBox" unique_id=1458212481]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
-text = "Opciones"
+size_flags_horizontal = 4
+texture_normal = ExtResource("5_opc")
+texture_pressed = ExtResource("6_opc_p")
+script = ExtResource("2_stone")
 
-[node name="MainMenuButton" type="Button" parent="Dim/Center/Panel/Margin/VBox" unique_id=27118837]
+[node name="MainMenuButton" type="TextureButton" parent="Dim/Center/Panel/Margin/VBox" unique_id=27118837]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(96, 0)
 layout_mode = 2
-text = "Salir al menú"
+size_flags_horizontal = 4
+texture_normal = ExtResource("7_menu")
+texture_pressed = ExtResource("8_menu_p")
+script = ExtResource("2_stone")
 
 [node name="OptionsMenu" parent="." unique_id=199308786 instance=ExtResource("1_i3u0a")]
 unique_name_in_owner = true

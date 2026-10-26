@@ -529,6 +529,8 @@ func build_sprite_frames() -> void:
 	_anim(sf, hero, "walk_up", [Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(1, 3)], 16, Vector2i.ZERO, 8.0)
 	_anim(sf, hero, "walk_right", [Vector2i(2, 0), Vector2i(3, 0), Vector2i(4, 0), Vector2i(5, 0)], 16, Vector2i.ZERO, 8.0)
 	_anim(sf, hero, "walk_left", [Vector2i(2, 1), Vector2i(3, 1), Vector2i(4, 1), Vector2i(5, 1)], 16, Vector2i.ZERO, 8.0)
+	# Dormido (dibujado por el equipo): se usa al inicio, antes de que llegue el guía.
+	_anim(sf, load("res://player/sprites/protagonista_dormido.png"), "sleep", [Vector2i(0, 0)], 16, Vector2i.ZERO, 1.0)
 	ResourceSaver.save(sf, "res://player/sprites/protagonista_frames.tres")
 
 	# Guía (mago): cuadros de 48×48, 4 por fila.
@@ -558,7 +560,19 @@ func build_sprite_frames() -> void:
 	ResourceSaver.save(sf, "res://world/enemies/alma_frames.tres")
 
 	# NPCs del pueblo (pack Ninja Adventure, CC0): columnas abajo, arriba, izquierda, derecha.
-	for npc in ["dona_clara", "panadero", "panteonero"]:
+	# Doña Clara y el panadero (dibujados por el equipo): celdas de 24×24, 3 columnas × 4 filas.
+	#   filas: abajo, izquierda, derecha, arriba · columna 1 = parado, 0 y 2 = pasos
+	for npc in ["dona_clara", "panadero"]:
+		var tex: Texture2D = load("res://world/npcs/sprites/%s.png" % npc)
+		sf = SpriteFrames.new()
+		sf.remove_animation("default")
+		var rows := ["down", "left", "right", "up"]
+		for r in 4:
+			_anim(sf, tex, "idle_" + rows[r], [Vector2i(1, r)], 24, Vector2i.ZERO, 1.0)
+			_anim(sf, tex, "walk_" + rows[r], [Vector2i(0, r), Vector2i(1, r), Vector2i(2, r), Vector2i(1, r)], 24, Vector2i.ZERO, 7.0)
+		ResourceSaver.save(sf, "res://world/npcs/sprites/%s_frames.tres" % npc)
+
+	for npc in ["panteonero"]:
 		var tex: Texture2D = load("res://world/npcs/sprites/%s.png" % npc)
 		sf = SpriteFrames.new()
 		sf.remove_animation("default")
