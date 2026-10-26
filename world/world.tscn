@@ -16,6 +16,7 @@
 [ext_resource type="SpriteFrames" path="res://world/npcs/sprites/panadero_frames.tres" id="25_coci"]
 [ext_resource type="SpriteFrames" path="res://world/npcs/sprites/panteonero_frames.tres" id="26_pant"]
 [ext_resource type="Script" path="res://world/enemies/alma_spawner.gd" id="27_spawn"]
+[ext_resource type="SpriteFrames" path="res://world/npcs/sprites/porton_frames.tres" id="28_porton"]
 [ext_resource type="SpriteFrames" path="res://world/npcs/sprites/cartel_frames.tres" id="22_cartel"]
 [ext_resource type="Resource" path="res://world/npcs/dialogues/cartel.dialogue" id="24_carteld"]
 
@@ -141,6 +142,10 @@ sprite_frames = ExtResource("22_cartel")
 [node name="Gate" parent="Entities" unique_id=1597522351 instance=ExtResource("4_fn3g3")]
 position = Vector2(1438, 355)
 dialogue = ExtResource("8_fyhu2")
+sprite_frames = ExtResource("28_porton")
+sprite_height = 44.0
+prompt_height = 54.0
+interact_radius = 34.0
 
 [node name="AlmaSpawner" type="Node2D" parent="Entities" unique_id=1597522410]
 y_sort_enabled = true

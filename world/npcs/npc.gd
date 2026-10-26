@@ -11,6 +11,8 @@ extends StaticBody2D
 @export var sprite_height: float = 16.0
 ## Qué tan arriba sale la tecla "E" (desde los pies). 0 = automático según el dibujo.
 @export var prompt_height: float = 0.0
+## Qué tan cerca hay que estar para interactuar (en píxeles). 0 = el normal (14).
+@export var interact_radius: float = 0.0
 
 const KEY_E := preload("res://common/ui/tecla_e.png")
 
@@ -26,10 +28,15 @@ var _can_talk_at: int = 0  # evita reabrir el diálogo con la misma tecla que lo
 func _ready() -> void:
 	$Prompt.hide()   # la etiqueta vieja ya no se usa
 	sprite.position.y = -sprite_height / 2.0
+	$Placeholder.hide()   # el cuadro de color ya no se usa (sin arte = invisible, como las puertas)
 	if sprite_frames:
 		sprite.sprite_frames = sprite_frames
 		sprite.play("idle_down")
-		$Placeholder.hide()
+	if interact_radius > 0.0:
+		var shape_node := $InteractionArea/CollisionShape2D as CollisionShape2D
+		var circle := CircleShape2D.new()   # copia propia para no cambiar a los demás NPCs
+		circle.radius = interact_radius
+		shape_node.shape = circle
 	_create_prompt()
 	$InteractionArea.body_entered.connect(_on_body_entered)
 	$InteractionArea.body_exited.connect(_on_body_exited)

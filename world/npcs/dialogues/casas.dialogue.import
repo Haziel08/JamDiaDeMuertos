@@ -1,0 +1,16 @@
+[remap]
+
+importer="dialogue_manager"
+importer_version=18
+type="Resource"
+uid="uid://cuj8eggeq6tai"
+path="res://.godot/imported/casas.dialogue-2f8def7ca3c2e1a154a84a94311bd2d8.tres"
+
+[deps]
+
+source_file="res://world/npcs/dialogues/casas.dialogue"
+dest_files=["res://.godot/imported/casas.dialogue-2f8def7ca3c2e1a154a84a94311bd2d8.tres"]
+
+[params]
+
+defaults=true

@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://finale/scripts/altar.gd" id="1_altar"]
+
+[node name="Altar" type="Node2D"]
+script = ExtResource("1_altar")

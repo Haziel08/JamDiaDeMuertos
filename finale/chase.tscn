@@ -1,14 +1,17 @@
 [gd_scene format=3 uid="uid://sah6ji6t8j4b"]
 
-[ext_resource type="PackedScene" uid="uid://fkoeb8q67jpe" path="res://player/Player.tscn" id="1_y2hph"]
-[ext_resource type="PackedScene" uid="uid://cyfhomka45t1r" path="res://menus/pause/PauseMenu.tscn" id="2_4jtfd"]
+[ext_resource type="Script" path="res://finale/scripts/chase.gd" id="1_chase"]
+[ext_resource type="PackedScene" uid="uid://fkoeb8q67jpe" path="res://player/Player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://cyfhomka45t1r" path="res://menus/pause/PauseMenu.tscn" id="3_pause"]
 
-[node name="Chase" type="Node2D" unique_id=1352701952]
+[node name="Chase" type="Node2D"]
+script = ExtResource("1_chase")
 
-[node name="Bridge" type="TileMapLayer" parent="." unique_id=736971313]
+[node name="Bridge" type="TileMapLayer" parent="."]
 
-[node name="Node2D" type="Node2D" parent="." unique_id=2037075208]
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
 
-[node name="Player" parent="Node2D" unique_id=442972059 instance=ExtResource("1_y2hph")]
+[node name="Player" parent="Entities" instance=ExtResource("2_player")]
 
-[node name="PauseMenu" parent="." unique_id=1878973421 instance=ExtResource("2_4jtfd")]
+[node name="PauseMenu" parent="." instance=ExtResource("3_pause")]

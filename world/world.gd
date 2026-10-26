@@ -3,6 +3,8 @@ extends Node2D
 
 const INTRO := preload("res://world/npcs/dialogues/intro.dialogue")
 const MEMORIES := preload("res://world/npcs/dialogues/memories.dialogue")
+const NPC_SCENE := preload("res://world/npcs/npc.tscn")
+const DOOR_DIALOGUE := preload("res://world/npcs/dialogues/casas.dialogue")
 
 ## Qué NPC entrega la luz de cada minijuego (usa el cue "reward" de su diálogo).
 const REWARD_DIALOGUES := {
@@ -20,7 +22,11 @@ var _welcomed: bool = false  # ya se mostró "Bienvenido al pueblo"
 
 
 func _ready() -> void:
+	_add_doors()
 	_place_at_markers()
+	var gate := get_node_or_null("Entities/Gate")
+	if gate and GameState.has_all_lights() and gate.has_method("play_if_exists"):
+		gate.call_deferred("play_if_exists", "open")   # el portal brilla cuando ya tienes las 3 luces
 	if GameState.has_return_position:
 		player.global_position = GameState.world_return_position
 	_set_camera_limits()
@@ -132,6 +138,21 @@ func _on_dialogue_ended(_resource: DialogueResource) -> void:
 	elif GameState.pending_finale:
 		GameState.pending_finale = false
 		SceneManager.go_to_finale()
+
+
+func _add_doors() -> void:
+	## Cada marcador "Door..." del mapa se vuelve una puerta con mensajes graciosos al azar.
+	var markers := get_node_or_null("Map/Markers")
+	if markers == null:
+		return
+	for marker in markers.get_children():
+		if not marker.name.begins_with("Door"):
+			continue
+		var door := NPC_SCENE.instantiate()
+		door.name = marker.name
+		door.dialogue = DOOR_DIALOGUE
+		door.prompt_height = 30.0
+		$Entities.add_child(door)
 
 
 func _place_at_markers() -> void:

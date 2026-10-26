@@ -398,9 +398,9 @@ func _place_buildings() -> void:
 			var c := _v(col, row)
 			walls.set_cell(c, ELEMENT, stones[rng.randi_range(0, 2)])
 			blocked[c] = true
-	_stamp(above, HOUSE, _v(89, 19), Vector2i(0, 5), Vector2i(3, 2), false)   # torii del portón
-	_stamp(walls, HOUSE, _v(86, 19), Vector2i(28, 20), Vector2i(1, 2))
-	_stamp(walls, HOUSE, _v(86, 23), Vector2i(28, 20), Vector2i(1, 2))
+	# Portón (arco de piedra): el dibujo va en la entidad Gate; aquí solo chocan sus dos patas.
+	for c in [_v(89, 21), _v(89, 22), _v(91, 21), _v(91, 22)]:
+		walls.set_cell(c, BLOCK, Vector2i(0, 0))
 	_rect(blocked, 84, 17, 91, 26)
 	_rect(blocked, 0, 18, 8, 25)      # entrada del pueblo (cartel de bienvenida)
 
@@ -503,6 +503,12 @@ func _add_markers(root: Node2D) -> void:
 		"Cocinero": Vector2((OX + 64) * T + 8, 14 * T + 14),
 		"Panteonero": Vector2((OX + 48) * T + 8, 32 * T + 14),
 		"Gate": Vector2((OX + 90) * T + 8, 22 * T + 14),
+		# Puertas de las casas (mensajes graciosos al intentar entrar)
+		"Door1": Vector2((OX + 45) * T + 8, 15 * T),
+		"Door2": Vector2((OX + 53) * T + 8, 16 * T),
+		"Door3": Vector2((OX + 28) * T + 8, 28 * T),
+		"Door4": Vector2((OX + 67) * T + 8, 28 * T),
+		"Door5": Vector2((OX + 61) * T + 8, 13 * T),
 	}
 	for marker_name in spots:
 		var m := Marker2D.new()
@@ -581,6 +587,14 @@ func build_sprite_frames() -> void:
 			_anim(sf, tex, "idle_" + order[i], [Vector2i(i, 0)], 16, Vector2i.ZERO, 1.0)
 			_anim(sf, tex, "walk_" + order[i], [Vector2i(i, 0), Vector2i(i, 1), Vector2i(i, 2), Vector2i(i, 3)], 16, Vector2i.ZERO, 8.0)
 		ResourceSaver.save(sf, "res://world/npcs/sprites/%s_frames.tres" % npc)
+
+	# Portón: arco de piedra con un portal. "idle_down" = cerrado (oscuro), "open" = con las 3 luces.
+	var gate_tex: Texture2D = load("res://world/npcs/sprites/porton.png")
+	sf = SpriteFrames.new()
+	sf.remove_animation("default")
+	_anim(sf, gate_tex, "idle_down", [Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0), Vector2i(3, 0)], 48, Vector2i.ZERO, 5.0)
+	_anim(sf, gate_tex, "open", [Vector2i(4, 0), Vector2i(5, 0), Vector2i(6, 0), Vector2i(7, 0)], 48, Vector2i.ZERO, 7.0)
+	ResourceSaver.save(sf, "res://world/npcs/sprites/porton_frames.tres")
 
 	# Cartel de bienvenida: poste del TilesetElement (16×32), recorrido para que la base quede en los pies.
 	var element: Texture2D = load("res://common/art/ninja/tilesets/TilesetElement.png")
