@@ -2,6 +2,10 @@ extends CanvasLayer
 ## Menú de pausa: se abre y cierra con la acción "pause" (Esc o P).
 ## Pausa todo el juego excepto este menú.
 
+## En los minijuegos: el botón MENU regresa al mapa abierto (donde estaba el jugador)
+## en lugar de ir al menú principal.
+@export var exit_to_world: bool = false
+
 @onready var main_panel: Control = %Center
 @onready var resume_button: BaseButton = %ResumeButton
 @onready var options_button: BaseButton = %OptionsButton
@@ -57,4 +61,8 @@ func _on_options_closed() -> void:
 
 
 func _go_to_main_menu() -> void:
+	if exit_to_world:
+		AudioManager.stop_music()
+		SceneManager.go_to_world()
+		return
 	SceneManager.go_to_main_menu()  # SceneManager quita la pausa al cambiar de escena

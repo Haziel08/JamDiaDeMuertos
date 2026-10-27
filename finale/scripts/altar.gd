@@ -4,7 +4,7 @@ extends Node2D
 
 const ENDING := preload("res://finale/dialogues/ending.dialogue")
 
-@export var ending_music: AudioStream
+@export var ending_music: AudioStream = preload("res://finale/music/sunbright.ogg")
 
 var _death: ColorRect
 
@@ -12,7 +12,10 @@ var _death: ColorRect
 func _ready() -> void:
 	_build_placeholder_scene()
 	if ending_music:
-		AudioManager.play_music(ending_music)
+		var music: AudioStream = ending_music.duplicate()
+		if music is AudioStreamOggVorbis:
+			(music as AudioStreamOggVorbis).loop = true   # que no se corte si leen despacio
+		AudioManager.play_music(music)
 	await get_tree().create_timer(1.0).timeout
 	DialogueManager.show_dialogue_balloon(ENDING, "start")
 	await DialogueManager.dialogue_ended

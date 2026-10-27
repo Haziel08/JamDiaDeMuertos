@@ -1,17 +1,19 @@
 [gd_scene format=3 uid="uid://sah6ji6t8j4b"]
 
-[ext_resource type="Script" path="res://finale/scripts/chase.gd" id="1_chase"]
+[ext_resource type="Script" uid="uid://7fs7u3q3b6a8" path="res://finale/scripts/chase.gd" id="1_chase"]
 [ext_resource type="PackedScene" uid="uid://fkoeb8q67jpe" path="res://player/Player.tscn" id="2_player"]
 [ext_resource type="PackedScene" uid="uid://cyfhomka45t1r" path="res://menus/pause/PauseMenu.tscn" id="3_pause"]
 
-[node name="Chase" type="Node2D"]
+[node name="Chase" type="Node2D" unique_id=489970466]
 script = ExtResource("1_chase")
+collapse_speed_start = 3.3
+random_drop_every = Vector2(0.5, 1)
 
-[node name="Bridge" type="TileMapLayer" parent="."]
+[node name="Bridge" type="TileMapLayer" parent="." unique_id=103098083]
 
-[node name="Entities" type="Node2D" parent="."]
+[node name="Entities" type="Node2D" parent="." unique_id=1966346842]
 y_sort_enabled = true
 
-[node name="Player" parent="Entities" instance=ExtResource("2_player")]
+[node name="Player" parent="Entities" unique_id=515239950 instance=ExtResource("2_player")]
 
-[node name="PauseMenu" parent="." instance=ExtResource("3_pause")]
+[node name="PauseMenu" parent="." unique_id=1691998066 instance=ExtResource("3_pause")]

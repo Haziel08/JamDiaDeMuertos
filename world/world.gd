@@ -4,6 +4,7 @@ extends Node2D
 const INTRO := preload("res://world/npcs/dialogues/intro.dialogue")
 const MEMORIES := preload("res://world/npcs/dialogues/memories.dialogue")
 const NPC_SCENE := preload("res://world/npcs/npc.tscn")
+const WORLD_MUSIC := preload("res://common/music/menu_theme.ogg")   # la misma del menú
 const DOOR_DIALOGUE := preload("res://world/npcs/dialogues/casas.dialogue")
 
 ## Qué NPC entrega la luz de cada minijuego (usa el cue "reward" de su diálogo).
@@ -22,6 +23,7 @@ var _welcomed: bool = false  # ya se mostró "Bienvenido al pueblo"
 
 
 func _ready() -> void:
+	AudioManager.play_music(WORLD_MUSIC)   # si ya venía sonando desde el menú, sigue sin cortarse
 	_add_doors()
 	_place_at_markers()
 	var gate := get_node_or_null("Entities/Gate")
@@ -48,8 +50,8 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# SOLO PARA PRUEBAS: F1 da las 3 luces. No funciona en la versión exportada sin debug.
-	if OS.is_debug_build() and event is InputEventKey and event.pressed and event.keycode == KEY_F1:
+	# SOLO PARA PRUEBAS: H da las 3 luces. No funciona en la versión exportada sin debug.
+	if OS.is_debug_build() and event is InputEventKey and event.pressed and event.keycode == KEY_H:
 		for minigame_id in ["minigame_trajineras", "minigame_ofrenda", "minigame_tumbas"]:
 			GameState.complete_minigame(minigame_id)
 		GameState.pending_reward = ""

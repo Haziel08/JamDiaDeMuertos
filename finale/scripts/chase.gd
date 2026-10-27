@@ -27,18 +27,20 @@ const T_IN_BL := Vector2i(2, 3); const T_IN_BR := Vector2i(3, 3)
 @export var max_turn: int = 7
 
 @export_group("Derrumbe")
-@export var collapse_delay: float = 3.0         ## segundos antes de que empiece
-@export var collapse_speed_start: float = 2.3   ## tiles por segundo al inicio
-@export var collapse_speed_end: float = 3.2     ## tiles por segundo al final (el jugador va a 3.75)
-@export var random_drop_every: Vector2 = Vector2(0.9, 1.8)  ## segundos entre caídas al azar
+@export var collapse_delay: float = 2.5         ## segundos antes de que empiece
+@export var collapse_speed_start: float = 3.05  ## tiles por segundo al inicio
+@export var collapse_speed_end: float = 3.6     ## tiles por segundo al final (el jugador va a 3.75)
+@export var random_drop_every: Vector2 = Vector2(0.7, 1.4)  ## segundos entre caídas al azar
 @export var crack_warning: float = 0.8          ## segundos que se ve agrietado antes de caer
+@export var linger_limit: float = 0.9           ## si te quedas parado más que esto en un tile, se agrieta
+@export var linger_chance: float = 0.75         ## probabilidad de que ese tile se caiga (0 a 1)
 
 @export_group("Luz")
 @export var darkness: Color = Color(0.05, 0.04, 0.08)
 @export var light_scale: float = 1.15           ## tamaño del círculo de luz del jugador
 
 @export_group("Audio")
-@export var chase_music: AudioStream
+@export var chase_music: AudioStream = preload("res://finale/music/fight_or_flight.ogg")
 @export var fall_sound: AudioStream
 
 @onready var bridge: TileMapLayer = $Bridge
@@ -51,6 +53,8 @@ var _cracking := {}       # celdas que ya van a caer
 var _front: float = 0.0   # todo lo que tenga índice menor que esto ya se cayó
 var _time: float = 0.0
 var _next_drop: float = 0.0
+var _stand_cell := Vector2i(-99999, -99999)   # tile donde está parado ahora
+var _stand_time: float = 0.0                  # cuánto tiempo lleva en ese tile
 var _over: bool = false
 var _hint: Label
 var _progress: ColorRect
@@ -72,7 +76,10 @@ func _ready() -> void:
 	_setup_camera()
 	_next_drop = collapse_delay + 2.0
 	if chase_music:
-		AudioManager.play_music(chase_music)
+		var music: AudioStream = chase_music.duplicate()
+		if music is AudioStreamOggVorbis:
+			(music as AudioStreamOggVorbis).loop = true
+		AudioManager.play_music(music)
 	_show_hint("¡Corre! El puente se está cayendo", 3.0)
 
 
@@ -87,6 +94,7 @@ func _physics_process(delta: float) -> void:
 		_fall()
 		return
 	var player_index: int = _cells[player_cell]
+	_check_linger(player_cell, delta)
 	_progress.size.x = 100.0 * float(player_index) / float(_centerline.size() - 1)
 	if player_index >= _centerline.size() - 3:
 		_win()
@@ -211,6 +219,19 @@ func _collapse_up_to(front: float) -> void:
 			_crack_then_drop(cell, 0.25)
 		elif index < front + 2.0 and not _cracking.has(cell) and randf() < 0.02:
 			_crack_then_drop(cell, 0.6)
+
+
+func _check_linger(cell: Vector2i, delta: float) -> void:
+	## Si el jugador se queda mucho tiempo en el mismo tile, puede que se le caiga debajo.
+	if cell != _stand_cell:
+		_stand_cell = cell
+		_stand_time = 0.0
+		return
+	_stand_time += delta
+	if _stand_time >= linger_limit and not _cracking.has(cell) and _cells[cell] > 1:
+		_stand_time = -9999.0   # solo se decide una vez por tile
+		if randf() < linger_chance:
+			_crack_then_drop(cell, 0.55)
 
 
 func _random_drop(player_index: int) -> void:

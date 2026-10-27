@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bldkmtor65hup"]
+
+[ext_resource type="Script" uid="uid://c43ko8rgu3re8" path="res://minigames/minigame_tumbas/scripts/minigame_tumbas.gd" id="1_tumbas"]
+[ext_resource type="PackedScene" uid="uid://cyfhomka45t1r" path="res://menus/pause/PauseMenu.tscn" id="2_pause"]
+
+[node name="MinigameTumbas" type="Node2D" unique_id=1602396537]
+script = ExtResource("1_tumbas")
+
+[node name="PauseMenu" parent="." unique_id=88700357 instance=ExtResource("2_pause")]
+exit_to_world = true

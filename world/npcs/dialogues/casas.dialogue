@@ -1,13 +1,14 @@
 # Puertas de las casas: cada vez sale un mensaje al azar.
 # Para agregar otro, escribe una línea nueva que empiece con %
+# OJO: no uses dos puntos ( : ) en el texto; el sistema los toma como "Nombre: diálogo".
 
 ~ start
 % [color=#a99cc8]Entrar a una casa sin permiso es de mala educación.[/color]
 % [color=#a99cc8]Está muy oscuro allá adentro… mejor no.[/color]
 % [color=#a99cc8]Toc, toc… nadie contesta. Ni los vivos ni los muertos.[/color]
 % [color=#a99cc8]Huele a pan de muerto. Qué crueldad no poder entrar.[/color]
-% [color=#a99cc8]La puerta está cerrada. Alguien dejó una nota: "Fuimos al panteón, regresamos el 3".[/color]
+% [color=#a99cc8]La puerta está cerrada. Alguien dejó una nota… "Fuimos al panteón, regresamos el 3".[/color]
 % [color=#a99cc8]Escucho ronquidos. Aquí descansa alguien en paz… literal.[/color]
-% [color=#a99cc8]Mi abuela siempre decía: "No te metas a casas ajenas, mijo".[/color]
+% [color=#a99cc8]Mi abuela siempre decía… "No te metas a casas ajenas, mijo".[/color]
 % [color=#a99cc8]El tapete dice "Bienvenido"… pero la puerta dice que no.[/color]
 => END

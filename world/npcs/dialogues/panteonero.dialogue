@@ -1,16 +1,16 @@
-# Panteonero — minijuego de acomodar tumbas
+# Panteonero — minijuego de limpiar tumbas (los bichitos se reubican, no se lastiman)
 
 # Frase "al aire" cuando el jugador pasa cerca (se usará más adelante).
 ~ bark
-Panteonero: Vaya, ¡sí que hay demasiadas tumbas! Y todavía me faltan varias por acomodar… Uf, pero estoy bastante agotado...
+Panteonero: ¡Cuántos bichitos y hojas en las tumbas! Y todavía me faltan varias por limpiar… Uf, estoy agotado.
 => END
 
 ~ start
 if GameState.is_minigame_completed("minigame_tumbas")
-	Panteonero: ¡Las tumbas quedaron preciosas! Gracias de nuevo.
+	Panteonero: ¡Las tumbas quedaron relucientes! Y los bichitos, felices en su nuevo hogar. Gracias de nuevo.
 	=> END
 elif GameState.has_met("panteonero")
-	Panteonero: ¿Cambiaste de opinión? ¿Me ayudas a acomodar las tumbas?
+	Panteonero: ¿Cambiaste de opinión? ¿Me ayudas a limpiar las tumbas?
 	- Sí => accept
 	- No => decline
 else
@@ -18,23 +18,24 @@ else
 	Panteonero: ¡Buenas noches, caballero! ¿Hay algo en lo que pueda ayudarte?
 	Tú: ¡Hola! Disculpe que lo moleste. Estoy recolectando algunas luces para poder regresar a casa.
 	Tú: ¿Cree que podría regalarme alguna de las que está colocando en las tumbas?
-	Panteonero: ¡Por supuesto! Aunque debo decirte que tengo una cantidad limitada de luces y no estoy seguro de que me sobre alguna para darte.
-	Panteonero: ¿Qué te parece si me ayudas a acomodar las tumbas que aún me faltan por adornar?
-	Panteonero: Así podré llevar la cuenta de las luces que tengo y, a cambio, te regalaré una de ellas. ¿Aceptas?
+	Panteonero: ¡Por supuesto! Aunque, mira nada más cómo están las tumbas… llenas de hojas, telarañas y bichitos.
+	Panteonero: Esta noche vienen las familias a visitar a sus difuntos y yo solo no alcanzo a dejarlas limpias.
+	Panteonero: Si me ayudas a limpiarlas antes de que se acabe el tiempo, te regalo una de mis luces. ¿Aceptas?
 	- Sí => accept
 	- No => decline
 
 ~ accept
-Panteonero: ¡Estupendo! ¡Tu ayuda me viene de maravilla! Te lo agradezco mucho.
-Panteonero: Sígueme, te iré guiando para que sepas cómo decorarlas.
+Panteonero: ¡Estupendo! Solo una cosa… a los bichitos no les hagas daño, ¿eh?
+Panteonero: Ellos también viven aquí. Nada más reubícalos con cuidado, lejos de las lápidas.
+Panteonero: Haz clic en cada bichito, en cada hoja y en cada telaraña. ¡Y apúrate, que el tiempo vuela!
 $> GameState.request_minigame("minigame_tumbas")
 => END
 
 ~ decline
-Panteonero: Lo entiendo. Sé que trabajar entre tantas tumbas puede resultar un poco escalofriante. Si cambias de opinión, aquí estaré.
+Panteonero: Lo entiendo. Sé que trabajar entre tantas tumbas y bichos puede resultar un poco escalofriante. Si cambias de opinión, aquí estaré.
 [color=#a99cc8](¡Qué lástima! Su ayuda me hubiera venido de maravilla).[/color]
 => END
 
 ~ reward
-Panteonero: ¡Trabajo impecable! Como lo prometí, aquí tienes tu luz.
+Panteonero: ¡Trabajo impecable! Y sin lastimar a ningún bichito. Como lo prometí, aquí tienes tu luz.
 => END
