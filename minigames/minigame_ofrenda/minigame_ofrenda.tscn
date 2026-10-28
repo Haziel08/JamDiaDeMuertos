@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cpalgskrw5q3n"]
+
+[ext_resource type="Script" uid="uid://d0ki2gtgr1j1r" path="res://minigames/minigame_ofrenda/scripts/minigame_ofrenda.gd" id="1_comida"]
+[ext_resource type="PackedScene" uid="uid://cyfhomka45t1r" path="res://menus/pause/PauseMenu.tscn" id="2_pause"]
+
+[node name="MinigameOfrenda" type="Node2D" unique_id=1930993396]
+script = ExtResource("1_comida")
+player_speed = 180.0
+
+[node name="PauseMenu" parent="." unique_id=1786738968 instance=ExtResource("2_pause")]
+exit_to_world = true

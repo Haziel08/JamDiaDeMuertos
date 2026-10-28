@@ -5,7 +5,7 @@ extends Node2D
 
 const MINIGAME_ID := "minigame_tumbas"
 const SPRITES := "res://minigames/minigame_tumbas/sprites/"
-const MUSIC := preload("res://minigames/minigame_tumbas/music/a_bit_of_hope.ogg")
+const MUSIC := preload("res://minigames/minigame_tumbas/music/skeleton_cave.ogg")
 const GRASS := preload("res://minigames/minigame_tumbas/sprites/pasto_cementerio.png")
 const TOMBS := preload("res://minigames/minigame_tumbas/sprites/lapidas.png")
 const STONE_BUTTON := preload("res://common/ui/stone_button.gd")

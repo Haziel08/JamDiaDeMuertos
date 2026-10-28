@@ -1,4 +1,4 @@
-# Cocinero — minijuego de la ofrenda que cae del cielo
+# Panadero (nodo Cocinero) — minijuego de atrapar la comida con la canasta
 
 ~ start
 if GameState.is_minigame_completed("minigame_ofrenda")
@@ -12,15 +12,16 @@ else
 	$> GameState.mark_met("cocinero")
 	Cocinero: Hola, veo que eres nuevo por aquí y que necesitas una luz, así que te ofrezco un trato.
 	Cocinero: Necesito que me ayudes a recoger unos alimentos: yo te los iré pasando y tú los atrapas.
-	Cocinero: Pero debes ser ágil, porque soy rápido, y si alguno toca el suelo no te daré lo que buscas. ¿Aceptas?
+	Cocinero: Pero debes ser ágil, porque cada vez lanzo más rápido. Si se te caen tres, se acabó el trato. ¿Aceptas?
 	- Sí => accept
 	- No => END
 
 ~ accept
-Cocinero: ¡Así me gusta! Prepárate.
+Cocinero: ¡Así me gusta! Ponte la canasta en la cabeza y muévete de un lado a otro.
+Cocinero: Aguanta hasta que termine la canción. ¡Prepárate!
 $> GameState.request_minigame("minigame_ofrenda")
 => END
 
 ~ reward
-Cocinero: ¡Ni uno tocó el suelo! Un trato es un trato: aquí tienes tu luz.
+Cocinero: ¡Qué reflejos! La ofrenda quedó completita. Un trato es un trato… aquí tienes tu luz.
 => END

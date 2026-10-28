@@ -2,6 +2,7 @@
 
 ~ start
 Tú: ¿Qué… qué está pasando? Hola, hola… hijo, ya llegué. ¿Qué, acaso no me ves? ¿Qué está pasando?
+$> reveal_death()
 Muerte: No pueden verte. Lo siento.
 Tú: ¿Qué? ¿Por qué?
 Muerte: Estás muerto. Fue reciente.
