@@ -64,7 +64,6 @@ jump={
 2d_physics/layer_2="Daño"
 2d_physics/layer_3="Jugador"
 2d_physics/layer_4="Recolectable"
-2d_physics/layer_5="Barcos"
 
 [physics]
 

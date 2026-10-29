@@ -166,19 +166,8 @@ func comprobar_aterrizaje() -> void:
 	barco_actual = null
 	sobre_barco = false
 
-	print("--- COMPROBANDO ATERRIZAJE ---")
-
-	# Mostrar todas las áreas detectadas por el detector
-	var areas_barco = dectector_aterrizaje.get_overlapping_areas()
-
-	print("Áreas detectadas por el detector: ", areas_barco.size())
-
-	for area in areas_barco:
-		print(
-			"Área: ", area.name,
-			" | Grupos: ", area.get_groups()
-		)
-
+	# Buscar un barco
+	for area in dectector_aterrizaje.get_overlapping_areas():
 		if area.is_in_group("zona_barco"):
 			barco_actual = area.get_parent() as Node2D
 
@@ -190,27 +179,15 @@ func comprobar_aterrizaje() -> void:
 				print("Sobre barco: ", sobre_barco)
 				return
 
-	# Mostrar todas las áreas detectadas por el Hurtbox
-	var areas_hurtbox = $Hurtbox.get_overlapping_areas()
-
-	print("Áreas detectadas por Hurtbox: ", areas_hurtbox.size())
-
-	var agua_detectada: bool = false
-
-	for area in areas_hurtbox:
-		print(
-			"Área del Hurtbox: ", area.name,
-			" | Grupos: ", area.get_groups()
-		)
-
+	# Si no hay barco, comprobar si estamos en el agua
+	for area in $Hurtbox.get_overlapping_areas():
 		if area.is_in_group("agua"):
-			agua_detectada = true
+			print("¡Aterrizaste en el agua!")
+			caer_al_agua()
+			return
 
-	if agua_detectada:
-		print("¡Aterrizaste en el agua!")
-		caer_al_agua()
-	else:
-		print("No se detectó barco ni agua")
+	# No se encontró ni barco ni agua
+	print("Aterrizaste en suelo seguro")
 		
 	
 
@@ -268,4 +245,38 @@ func caer_al_agua() -> void:
 	respawn()
 
 	await parpadear()
+	
+func caer_de_borde() -> void:
+	# Evitar procesar dos veces la misma caída
+	if barco_actual == null:
+		return
+
+	# Dejar de seguir a la trajinera
+	barco_actual = null
+	sobre_barco = false
+	saltando = false
+	altura_salto = 0.0
+
+	animated_sprite_2d.position = posicion_sprite_original
+
+	# Si no está invulnerable, pierde una vida
+	if not invulnerable:
+		vidas -= 1
+
+		print("¡Caíste del borde!")
+		print("Vidas restantes: ", vidas)
+
+		actualizar_corazones()
+
+		if vidas <= 0:
+			morir()
+			return
+
+		invulnerable = true
+
+		# Inicia el parpadeo sin bloquear el movimiento del barco
+		parpadear()
+
+	# Reaparecer en la posición inicial
+	respawn()
 	
