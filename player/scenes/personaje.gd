@@ -25,6 +25,18 @@ var posicion_anterior_barco: Vector2 = Vector2.ZERO
 @export var corazon_lleno: Texture2D
 @export var corazon_vacio: Texture2D
 
+#Reaparición: el jugador reaparece en la última orilla que pisó
+@export var reaparicion_izquierda: Vector2 = Vector2(-198.0, -5.0)
+@export var reaparicion_derecha: Vector2 = Vector2(196.0, -5.0)
+#Límites del agua: más a la izquierda de esto es la orilla izquierda, más a la derecha es la derecha
+@export var orilla_izquierda_x: float = -165.0
+@export var orilla_derecha_x: float = 178.0
+var punto_reaparicion: Vector2 = Vector2(-198.0, -5.0)
+
+#Flores recolectables
+var flores_recogidas: int = 0
+var total_flores: int = 0
+
 @onready var corazones: Array[TextureRect]=[
 	$"../HUD/Corazones/Corazon1",
 	$"../HUD/Corazones/Corazon2",
@@ -38,9 +50,27 @@ func actualizar_corazones()-> void:
 		else:
 			corazones[i].texture = corazon_vacio
 
-#Reaparición al tocar el agua
+#Reaparición al tocar el agua: en la orilla donde estuvo por última vez
 func respawn():
-	self.global_position = Vector2(-198.0, -5.0)
+	self.global_position = punto_reaparicion
+
+#Revisa en qué orilla está parado para saber dónde reaparecer
+func actualizar_orilla() -> void:
+	if saltando or sobre_barco:
+		return
+	if global_position.x <= orilla_izquierda_x:
+		punto_reaparicion = reaparicion_izquierda
+	elif global_position.x >= orilla_derecha_x:
+		punto_reaparicion = reaparicion_derecha
+
+#Se llama desde la flor cuando el jugador la toca
+func recoger_flor() -> void:
+	flores_recogidas += 1
+	print("Flores: ", flores_recogidas, "/", total_flores)
+	$"../HUD".actualizar_flores(flores_recogidas, total_flores)
+
+	if flores_recogidas >= total_flores:
+		print("¡Recolectaste todas las flores!")
 
 #Daño al tocar el agua
 func recibir_dano() -> void:
@@ -70,7 +100,7 @@ func parpadear() -> void:
 			animated_sprite_2d.visible = true
 			await get_tree().create_timer(0.1).timeout
 			
-			tiempo_transcurrido += 0.5
+			tiempo_transcurrido += 0.2   # cada vuelta dura 0.1 + 0.1 segundos
 			
 		animated_sprite_2d.visible = true
 		invulnerable = false
@@ -79,12 +109,33 @@ func parpadear() -> void:
 
 func morir() -> void:
 	print("Moriste")
-	queue_free()
+	# Antes se borraba al jugador (queue_free) y el juego se quedaba congelado.
+	# Ahora se detiene, se desvanece y el minijuego vuelve a empezar.
+	set_physics_process(false)
+	set_process(false)
+	set_process_input(false)
+	var tween := create_tween()
+	tween.tween_property(animated_sprite_2d, "modulate:a", 0.0, 0.6)
+	await get_tree().create_timer(1.5).timeout
+	get_tree().reload_current_scene()
 
 func _physics_process(delta: float) -> void:
 	get_input()
 	move_and_slide()
 	seguir_barco()
+	revisar_agua()
+	actualizar_orilla()
+
+
+func revisar_agua() -> void:
+	## El agua se revisa en cada cuadro (no solo al entrar), así el jugador no puede
+	## quedarse caminando en el agua cuando se le acaba la invulnerabilidad.
+	if invulnerable or saltando or sobre_barco:
+		return
+	for area in $Hurtbox.get_overlapping_areas():
+		if area.is_in_group("agua"):
+			caer_al_agua()
+			return
 	
 func get_input():
 	var input_direction = Input.get_vector("left", "right", "up", "down")
@@ -213,6 +264,12 @@ func _process(delta: float) -> void:
 	
 func _ready() -> void:
 	posicion_sprite_original = animated_sprite_2d.position
+	punto_reaparicion = reaparicion_izquierda
+
+	#Cuenta cuántas flores hay en el nivel
+	total_flores = get_tree().get_nodes_in_group("flor").size()
+	$"../HUD".actualizar_flores(flores_recogidas, total_flores)
+	actualizar_corazones()
 
 func iniciar_salto() -> void:
 	if saltando:

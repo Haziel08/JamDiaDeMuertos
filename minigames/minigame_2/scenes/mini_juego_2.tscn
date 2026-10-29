@@ -6,10 +6,14 @@
 [ext_resource type="Script" uid="uid://d0wm7gd6vy3gv" path="res://minigames/minigame_2/scenes/agua.gd" id="4_hkwfg"]
 [ext_resource type="Texture2D" uid="uid://buirlm7xfr6lg" path="res://minigames/minigame_2/sprites/agua-column.png" id="5_gra71"]
 [ext_resource type="Script" uid="uid://hqjc11h4j0t7" path="res://minigames/minigame_2/scenes/barco.gd" id="6_5nwju"]
-[ext_resource type="Texture2D" uid="uid://dqwr1wbrph4xj" path="res://minigames/minigame_2/sprites/corazon_lleno.png" id="6_nf4gw"]
-[ext_resource type="Texture2D" uid="uid://bi28ubr8y3m1s" path="res://minigames/minigame_2/sprites/Corazón vacio.png" id="7_faxn2"]
+[ext_resource type="Texture2D" path="res://minigames/minigame_2/sprites/corazon_lleno_juego.png" id="6_nf4gw"]
+[ext_resource type="Texture2D" path="res://minigames/minigame_2/sprites/corazon_vacio_juego.png" id="7_faxn2"]
 [ext_resource type="Script" uid="uid://byj71ln1m8lop" path="res://minigames/minigame_2/scenes/barco_2.gd" id="7_mm3fm"]
 [ext_resource type="Texture2D" uid="uid://ce4j0u5ckp1op" path="res://minigames/minigame_2/sprites/trajinera.png" id="8_gm01b"]
+[ext_resource type="Script" path="res://minigames/minigame_2/scenes/hud.gd" id="9_hud"]
+[ext_resource type="PackedScene" path="res://minigames/minigame_2/scenes/flor/flor.tscn" id="10_flor"]
+[ext_resource type="AudioStream" path="res://minigames/minigame_2/musica/improve_upon_improv.ogg" id="11_musica"]
+[ext_resource type="Script" path="res://minigames/minigame_2/scenes/musica.gd" id="12_musica"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nf4gw"]
 texture = ExtResource("5_gra71")
@@ -63,7 +67,7 @@ collision_visibility_mode = 1
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=788256219]
 layer = 3
-visible = false
+script = ExtResource("9_hud")
 
 [node name="Corazones" type="HBoxContainer" parent="HUD" unique_id=174006412]
 offset_right = 203.0
@@ -74,17 +78,47 @@ metadata/_edit_use_anchors_ = true
 [node name="Corazon1" type="TextureRect" parent="HUD/Corazones" unique_id=2009559758]
 layout_mode = 2
 texture = ExtResource("6_nf4gw")
-expand_mode = 2
 
 [node name="Corazon2" type="TextureRect" parent="HUD/Corazones" unique_id=1768232546]
 layout_mode = 2
 texture = ExtResource("6_nf4gw")
-expand_mode = 2
 
 [node name="Corazon3" type="TextureRect" parent="HUD/Corazones" unique_id=979649240]
 layout_mode = 2
 texture = ExtResource("6_nf4gw")
-expand_mode = 2
+
+[node name="ContadorFlores" type="HBoxContainer" parent="HUD" unique_id=1597530001]
+offset_right = 40.0
+offset_bottom = 12.0
+theme_override_constants/separation = 3
+
+[node name="Icono" type="ColorRect" parent="HUD/ContadorFlores" unique_id=1597530002]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.9647059, 0.8039216, 0.14901961, 1)
+
+[node name="Cantidad" type="Label" parent="HUD/ContadorFlores" unique_id=1597530003]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.1, 0.06, 0.05, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 10
+text = "0/0"
+
+[node name="Musica" type="AudioStreamPlayer" parent="." unique_id=1597530004]
+stream = ExtResource("11_musica")
+script = ExtResource("12_musica")
+
+[node name="Flores" type="Node2D" parent="." unique_id=1597530005]
+
+[node name="FlorOrilla1" parent="Flores" unique_id=1597530006 instance=ExtResource("10_flor")]
+position = Vector2(196, -90)
+
+[node name="FlorOrilla2" parent="Flores" unique_id=1597530007 instance=ExtResource("10_flor")]
+position = Vector2(196, 40)
+
+[node name="FlorOrilla3" parent="Flores" unique_id=1597530008 instance=ExtResource("10_flor")]
+position = Vector2(196, 120)
 
 [node name="Barco" type="AnimatableBody2D" parent="." unique_id=1195531490]
 position = Vector2(-138, -95)
@@ -229,6 +263,15 @@ collision_mask = 4
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_5nwju")
 debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
+
+[node name="FlorBarco2" parent="Barco2" unique_id=1597530009 instance=ExtResource("10_flor")]
+position = Vector2(0, -4)
+
+[node name="FlorBarco4" parent="Barco4" unique_id=1597530010 instance=ExtResource("10_flor")]
+position = Vector2(0, -4)
+
+[node name="FlorBarco6" parent="Barco6" unique_id=1597530011 instance=ExtResource("10_flor")]
+position = Vector2(0, -4)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=202002789]
 y_sort_enabled = true

@@ -12,4 +12,6 @@ func _on_area_entered(area: Area2D) -> void:
 	#El salto y el aterrizaje se gestionan desde el jugador
 	if jugador.saltando or jugador.sobre_barco:
 		return
-	jugador.recibir_dano()
+	# Igual que al caer de un salto: pierde una vida y reaparece en la orilla
+	# (antes perdía la vida pero se quedaba parado en el agua).
+	jugador.caer_al_agua()
