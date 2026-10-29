@@ -9,6 +9,9 @@ size = Vector2(14, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1fiel"]
 size = Vector2(9, 14)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_javrd"]
+size = Vector2(12, 4)
+
 [node name="Personaje" type="CharacterBody2D" unique_id=833555199]
 position = Vector2(94, 55)
 collision_layer = 4
@@ -32,3 +35,12 @@ collision_mask = 2
 position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_1fiel")
 debug_color = Color(0.8871786, 0.2826754, 0.44591272, 0.41960785)
+
+[node name="DetectorAterrizaje" type="Area2D" parent="." unique_id=1657801486]
+collision_layer = 4
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectorAterrizaje" unique_id=1698854796]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_javrd")
+debug_color = Color(0.7127495, 0.4787324, 0.21551234, 0.41960785)

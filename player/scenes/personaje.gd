@@ -11,10 +11,16 @@ var tiempo_invulnerable: float = 2.0
 
 #Variables de salto
 var saltando: bool = false
-var altura_salto: float = 0.0
-var duracion_salto: float = 0.4
+var altura_salto: float = 32.0
+var duracion_salto: float = 0.5
 var tiempo_salto: float = 0.0
 
+#Variables de barco
+var sobre_barco: bool = false
+var barco_actual: Node2D = null
+var posicion_anterior_barco: Vector2 = Vector2.ZERO
+
+@onready var dectector_aterrizaje: Area2D = $DetectorAterrizaje
 
 @export var corazon_lleno: Texture2D
 @export var corazon_vacio: Texture2D
@@ -38,7 +44,7 @@ func respawn():
 
 #Daño al tocar el agua
 func recibir_dano() -> void:
-	if invulnerable or saltando:
+	if invulnerable or saltando or sobre_barco:
 		return
 		
 	vidas -=1
@@ -75,9 +81,10 @@ func morir() -> void:
 	print("Moriste")
 	queue_free()
 
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	get_input()
 	move_and_slide()
+	seguir_barco()
 	
 func get_input():
 	var input_direction = Input.get_vector("left", "right", "up", "down")
@@ -105,8 +112,21 @@ func get_input():
 func update_animation(state):
 	animated_sprite_2d.play(state + "_" + last_direction)
 
-func _on_hit_box_body_entered(body: Node2D) -> void:
-	pass 
+func _on_hit_box_area_entered(area: Area2D) -> void:
+	print("Área detectada: ", area.name)
+
+	if area.name != "Hurtbox":
+		return
+
+	var jugador = area.get_parent()
+
+	if jugador.saltando:
+		return
+
+	if jugador.sobre_barco:
+		return
+
+	jugador.recibir_dano()
 	
 	
 func _input(event: InputEvent) -> void:
@@ -119,19 +139,133 @@ func actualizar_salto(delta: float) -> void:
 		return
 	tiempo_salto += delta
 	
-	#Calcula la altura del salto
+	#Calcula la altura visual del salto
 	var progreso: float = tiempo_salto / duracion_salto
+	progreso = clampf(progreso, 0.0, 1.0)
+	
 	altura_salto = sin(progreso * PI) * 20.0
 	
-	#Termina el salto
+	#Eleva el sprite visualmente
+	animated_sprite_2d.position.y = (
+		posicion_sprite_original.y - altura_salto
+	)
+	
+	#Comprueba si el salto ha terminado
 	if tiempo_salto >= duracion_salto:
 		saltando = false
 		altura_salto = 0.0
+		
+		animated_sprite_2d.position = posicion_sprite_original
+		
+		#Espera a que actualice las colisiones
+		await get_tree().physics_frame
+	 
+		comprobar_aterrizaje()
 	
-	animated_sprite_2d.position.y = posicion_sprite_original.y - altura_salto
+func comprobar_aterrizaje() -> void:
+	barco_actual = null
+	sobre_barco = false
+
+	print("--- COMPROBANDO ATERRIZAJE ---")
+
+	# Mostrar todas las áreas detectadas por el detector
+	var areas_barco = dectector_aterrizaje.get_overlapping_areas()
+
+	print("Áreas detectadas por el detector: ", areas_barco.size())
+
+	for area in areas_barco:
+		print(
+			"Área: ", area.name,
+			" | Grupos: ", area.get_groups()
+		)
+
+		if area.is_in_group("zona_barco"):
+			barco_actual = area.get_parent() as Node2D
+
+			if barco_actual != null:
+				sobre_barco = true
+				posicion_anterior_barco = barco_actual.global_position
+
+				print("¡Aterrizaje correcto!")
+				print("Sobre barco: ", sobre_barco)
+				return
+
+	# Mostrar todas las áreas detectadas por el Hurtbox
+	var areas_hurtbox = $Hurtbox.get_overlapping_areas()
+
+	print("Áreas detectadas por Hurtbox: ", areas_hurtbox.size())
+
+	var agua_detectada: bool = false
+
+	for area in areas_hurtbox:
+		print(
+			"Área del Hurtbox: ", area.name,
+			" | Grupos: ", area.get_groups()
+		)
+
+		if area.is_in_group("agua"):
+			agua_detectada = true
+
+	if agua_detectada:
+		print("¡Aterrizaste en el agua!")
+		caer_al_agua()
+	else:
+		print("No se detectó barco ni agua")
+		
+	
+
+func seguir_barco()-> void:
+	if saltando:
+		return
+		
+	if not is_instance_valid(barco_actual):
+		barco_actual = null
+		sobre_barco = false
+		return
+		
+	var desplazamiento: Vector2 = (
+		barco_actual.global_position - posicion_anterior_barco
+	)
+	
+	global_position += desplazamiento
+	
+	posicion_anterior_barco = barco_actual.global_position	
 
 func _process(delta: float) -> void:
 	actualizar_salto(delta)
 	
 func _ready() -> void:
 	posicion_sprite_original = animated_sprite_2d.position
+
+func iniciar_salto() -> void:
+	if saltando:
+		return
+	saltando = true
+	tiempo_salto = 0.0
+	
+	#Dejar de seguir al barco anterior
+	barco_actual = null
+	sobre_barco = false
+
+#Caer en agua
+func caer_al_agua() -> void:
+	if invulnerable or saltando or sobre_barco:
+		return
+
+	vidas -= 1
+
+	print("¡Caíste al agua!")
+	print("Vidas restantes: ", vidas)
+
+	actualizar_corazones()
+
+	if vidas <= 0:
+		morir()
+		return
+
+	# Evita recibir daño repetido durante la reaparición
+	invulnerable = true
+	respawn()
+
+	await parpadear()
+	

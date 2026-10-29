@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://buirlm7xfr6lg" path="res://minigames/minigame_2/sprites/agua-column.png" id="5_gra71"]
 [ext_resource type="Texture2D" uid="uid://dqwr1wbrph4xj" path="res://minigames/minigame_2/sprites/corazon_lleno.png" id="6_nf4gw"]
 [ext_resource type="Texture2D" uid="uid://bi28ubr8y3m1s" path="res://minigames/minigame_2/sprites/Corazón vacio.png" id="7_faxn2"]
+[ext_resource type="Texture2D" uid="uid://ce4j0u5ckp1op" path="res://minigames/minigame_2/sprites/trajinera.png" id="8_gm01b"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nf4gw"]
 texture = ExtResource("5_gra71")
@@ -25,11 +26,17 @@ physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_nf4gw")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bacok"]
-size = Vector2(335, 224)
+size = Vector2(335, 231)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gm01b"]
+size = Vector2(24, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5nwju"]
+size = Vector2(16, 24)
 
 [node name="MiniJuego2" type="Node2D" unique_id=1605687077]
 
-[node name="Agua" type="Area2D" parent="." unique_id=224646470]
+[node name="Agua" type="Area2D" parent="." unique_id=224646470 groups=["agua"]]
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("4_hkwfg")
@@ -39,8 +46,9 @@ tile_map_data = PackedByteArray("AAD2//r/AAAAAAAAAAD2//v/AAAAAAAAAAD2//z/AAAAAAA
 tile_set = SubResource("TileSet_bacok")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Agua" unique_id=276453709]
-position = Vector2(-1, -2)
+position = Vector2(7.5, 1.5)
 shape = SubResource("RectangleShape2D_bacok")
+debug_color = Color(0.6461726, 0.47867203, 0.56732404, 0.41960785)
 
 [node name="Pasto" type="TileMapLayer" parent="." unique_id=751758116]
 position = Vector2(-1, 0)
@@ -50,13 +58,9 @@ tile_set = ExtResource("1_bvk8f")
 [node name="Borde" parent="." unique_id=1283560769 instance=ExtResource("2_e1b68")]
 collision_visibility_mode = 1
 
-[node name="Personaje" parent="." unique_id=833555199 groups=["jugador"] instance=ExtResource("3_e1b68")]
-position = Vector2(-198, -5)
-corazon_lleno = ExtResource("6_nf4gw")
-corazon_vacio = ExtResource("7_faxn2")
-
 [node name="HUD" type="CanvasLayer" parent="." unique_id=788256219]
 layer = 3
+visible = false
 
 [node name="Corazones" type="HBoxContainer" parent="HUD" unique_id=174006412]
 offset_right = 203.0
@@ -79,9 +83,58 @@ layout_mode = 2
 texture = ExtResource("6_nf4gw")
 expand_mode = 2
 
+[node name="Barco" type="AnimatableBody2D" parent="." unique_id=1195531490]
+position = Vector2(-163, -4)
+collision_layer = 4
+collision_mask = 2
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Barco" unique_id=1127116109]
+texture = ExtResource("8_gm01b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco" unique_id=151276013]
+shape = SubResource("RectangleShape2D_gm01b")
+debug_color = Color(0.93390125, 0.69237274, 0, 0.9019608)
+
+[node name="ZonaAterrizaje" type="Area2D" parent="Barco" unique_id=1032196647 groups=["zona_barco"]]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco/ZonaAterrizaje" unique_id=602504908]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_5nwju")
+debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
+
+[node name="Barco2" type="AnimatableBody2D" parent="." unique_id=1756804587]
+position = Vector2(-138, -4)
+collision_layer = 4
+collision_mask = 2
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Barco2" unique_id=501840410]
+texture = ExtResource("8_gm01b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco2" unique_id=259043188]
+shape = SubResource("RectangleShape2D_gm01b")
+debug_color = Color(0.93390125, 0.69237274, 0, 0.9019608)
+
+[node name="ZonaAterrizaje" type="Area2D" parent="Barco2" unique_id=2121289608 groups=["zona_barco"]]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco2/ZonaAterrizaje" unique_id=1668686287]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_5nwju")
+debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=202002789]
 y_sort_enabled = true
 offset = Vector2(7.92, 0)
 zoom = Vector2(2.04, 2.04)
+
+[node name="Personaje" parent="." unique_id=833555199 groups=["jugador"] instance=ExtResource("3_e1b68")]
+position = Vector2(-198, -5)
+corazon_lleno = ExtResource("6_nf4gw")
+corazon_vacio = ExtResource("7_faxn2")
 
 [connection signal="area_entered" from="Agua" to="Agua" method="_on_area_entered"]
