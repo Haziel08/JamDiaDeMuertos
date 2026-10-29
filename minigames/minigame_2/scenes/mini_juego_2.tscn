@@ -6,14 +6,15 @@
 [ext_resource type="Script" uid="uid://d0wm7gd6vy3gv" path="res://minigames/minigame_2/scenes/agua.gd" id="4_hkwfg"]
 [ext_resource type="Texture2D" uid="uid://buirlm7xfr6lg" path="res://minigames/minigame_2/sprites/agua-column.png" id="5_gra71"]
 [ext_resource type="Script" uid="uid://hqjc11h4j0t7" path="res://minigames/minigame_2/scenes/barco.gd" id="6_5nwju"]
-[ext_resource type="Texture2D" path="res://minigames/minigame_2/sprites/corazon_lleno_juego.png" id="6_nf4gw"]
-[ext_resource type="Texture2D" path="res://minigames/minigame_2/sprites/corazon_vacio_juego.png" id="7_faxn2"]
+[ext_resource type="Texture2D" uid="uid://6231if0daa4n" path="res://minigames/minigame_2/sprites/corazon_lleno_juego.png" id="6_nf4gw"]
+[ext_resource type="Texture2D" uid="uid://hrgmtse81b7t" path="res://minigames/minigame_2/sprites/corazon_vacio_juego.png" id="7_faxn2"]
 [ext_resource type="Script" uid="uid://byj71ln1m8lop" path="res://minigames/minigame_2/scenes/barco_2.gd" id="7_mm3fm"]
+[ext_resource type="Texture2D" uid="uid://s7jt8i5nx0kd" path="res://minigames/minigame_2/sprites/Flor.png" id="7_vh8lw"]
 [ext_resource type="Texture2D" uid="uid://ce4j0u5ckp1op" path="res://minigames/minigame_2/sprites/trajinera.png" id="8_gm01b"]
-[ext_resource type="Script" path="res://minigames/minigame_2/scenes/hud.gd" id="9_hud"]
+[ext_resource type="Script" uid="uid://dd2kvsgo1ld3t" path="res://minigames/minigame_2/scenes/hud.gd" id="9_hud"]
 [ext_resource type="PackedScene" path="res://minigames/minigame_2/scenes/flor/flor.tscn" id="10_flor"]
-[ext_resource type="AudioStream" path="res://minigames/minigame_2/musica/improve_upon_improv.ogg" id="11_musica"]
-[ext_resource type="Script" path="res://minigames/minigame_2/scenes/musica.gd" id="12_musica"]
+[ext_resource type="AudioStream" uid="uid://bu61hstqeerf3" path="res://minigames/minigame_2/musica/improve_upon_improv.ogg" id="11_musica"]
+[ext_resource type="Script" uid="uid://dx6e86ug45vne" path="res://minigames/minigame_2/scenes/musica.gd" id="12_musica"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nf4gw"]
 texture = ExtResource("5_gra71")
@@ -92,11 +93,11 @@ offset_right = 40.0
 offset_bottom = 12.0
 theme_override_constants/separation = 3
 
-[node name="Icono" type="ColorRect" parent="HUD/ContadorFlores" unique_id=1597530002]
+[node name="Icono" type="TextureRect" parent="HUD/ContadorFlores" unique_id=384009794]
 custom_minimum_size = Vector2(8, 8)
 layout_mode = 2
 size_flags_vertical = 4
-color = Color(0.9647059, 0.8039216, 0.14901961, 1)
+texture = ExtResource("7_vh8lw")
 
 [node name="Cantidad" type="Label" parent="HUD/ContadorFlores" unique_id=1597530003]
 layout_mode = 2
@@ -167,6 +168,9 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_5nwju")
 debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
 
+[node name="FlorBarco2" parent="Barco2" unique_id=1597530009 instance=ExtResource("10_flor")]
+position = Vector2(0, -4)
+
 [node name="Barco3" type="AnimatableBody2D" parent="." unique_id=1366695597]
 position = Vector2(-30, -112)
 collision_layer = 4
@@ -217,6 +221,9 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_5nwju")
 debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
 
+[node name="FlorBarco4" parent="Barco4" unique_id=1597530010 instance=ExtResource("10_flor")]
+position = Vector2(0, -4)
+
 [node name="Barco5" type="AnimatableBody2D" parent="." unique_id=1659288734]
 position = Vector2(84, -112)
 collision_layer = 4
@@ -263,12 +270,6 @@ collision_mask = 4
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_5nwju")
 debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
-
-[node name="FlorBarco2" parent="Barco2" unique_id=1597530009 instance=ExtResource("10_flor")]
-position = Vector2(0, -4)
-
-[node name="FlorBarco4" parent="Barco4" unique_id=1597530010 instance=ExtResource("10_flor")]
-position = Vector2(0, -4)
 
 [node name="FlorBarco6" parent="Barco6" unique_id=1597530011 instance=ExtResource("10_flor")]
 position = Vector2(0, -4)
