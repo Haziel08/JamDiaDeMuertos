@@ -19,7 +19,9 @@ const REWARD_DIALOGUES := {
 @onready var guide: Node2D = $Entities/Guide
 @onready var hud: CanvasLayer = $Hud
 
-var _welcomed: bool = false  # ya se mostró "Bienvenido al pueblo"
+var _welcomed: bool = false
+var _portal_arrow: Sprite2D          # flecha que apunta al portal cuando ya tienes las 3 luces
+var _portal_hint_shown: bool = false  # ya se mostró "Bienvenido al pueblo"
 
 
 func _ready() -> void:
@@ -59,6 +61,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _process(_delta: float) -> void:
+	_update_portal_arrow()
 	# Al cruzar el puentecito hacia el pueblo aparece el aviso de bienvenida (una vez).
 	if _welcomed:
 		return
@@ -69,6 +72,34 @@ func _process(_delta: float) -> void:
 		await get_tree().create_timer(3.0, false).timeout
 		if is_inside_tree():
 			hud.hide_hint()
+
+
+func _update_portal_arrow() -> void:
+	## Con las 3 luces aparece una flecha dorada alrededor del jugador que apunta al portal.
+	var gate := get_node_or_null("Entities/Gate") as Node2D
+	if gate == null or not GameState.has_all_lights():
+		if _portal_arrow:
+			_portal_arrow.hide()
+		return
+	if _portal_arrow == null:
+		_portal_arrow = Sprite2D.new()
+		_portal_arrow.texture = preload("res://common/ui/flecha_portal.png")
+		_portal_arrow.z_index = 20
+		add_child(_portal_arrow)
+		if gate.has_method("play_if_exists"):
+			gate.play_if_exists("open")
+	if not _portal_hint_shown and not GameState.in_dialogue:
+		_portal_hint_shown = true
+		hud.show_hint("¡Tienes las 3 luces! Ve al portal")
+		get_tree().create_timer(3.5, false).timeout.connect(hud.hide_hint)
+	var from := player.global_position + Vector2(0, -8)
+	var to_gate := gate.global_position + Vector2(0, -20) - from
+	# cerca del portal ya no hace falta
+	_portal_arrow.visible = to_gate.length() > 56.0 and not GameState.in_dialogue
+	var dir := to_gate.normalized()
+	var bob := sin(Time.get_ticks_msec() / 180.0) * 2.0
+	_portal_arrow.global_position = (from + dir * (20.0 + bob)).round()
+	_portal_arrow.rotation = dir.angle()
 
 
 func _show_controls_tutorial() -> void:
