@@ -1,0 +1,287 @@
+[gd_scene format=4 uid="uid://d24js1n6lhip1"]
+
+[ext_resource type="TileSet" uid="uid://dwg8d2gcbehf1" path="res://minigames/minigame_2/tile_set/miniJuegoDos.tres" id="1_bvk8f"]
+[ext_resource type="PackedScene" uid="uid://buamesvaylbyv" path="res://minigames/minigame_2/scenes/borde/borde.tscn" id="2_e1b68"]
+[ext_resource type="PackedScene" uid="uid://dckaxn66337r8" path="res://player/scenes/personaje.tscn" id="3_e1b68"]
+[ext_resource type="Script" uid="uid://d0wm7gd6vy3gv" path="res://minigames/minigame_2/scenes/agua.gd" id="4_hkwfg"]
+[ext_resource type="Texture2D" uid="uid://buirlm7xfr6lg" path="res://minigames/minigame_2/sprites/agua-column.png" id="5_gra71"]
+[ext_resource type="Script" uid="uid://hqjc11h4j0t7" path="res://minigames/minigame_2/scenes/barco.gd" id="6_5nwju"]
+[ext_resource type="Texture2D" uid="uid://6231if0daa4n" path="res://minigames/minigame_2/sprites/corazon_lleno_juego.png" id="6_nf4gw"]
+[ext_resource type="Texture2D" uid="uid://hrgmtse81b7t" path="res://minigames/minigame_2/sprites/corazon_vacio_juego.png" id="7_faxn2"]
+[ext_resource type="Script" uid="uid://byj71ln1m8lop" path="res://minigames/minigame_2/scenes/barco_2.gd" id="7_mm3fm"]
+[ext_resource type="Texture2D" uid="uid://s7jt8i5nx0kd" path="res://minigames/minigame_2/sprites/Flor.png" id="7_vh8lw"]
+[ext_resource type="Texture2D" uid="uid://ce4j0u5ckp1op" path="res://minigames/minigame_2/sprites/trajinera.png" id="8_gm01b"]
+[ext_resource type="Script" uid="uid://dd2kvsgo1ld3t" path="res://minigames/minigame_2/scenes/hud.gd" id="9_hud"]
+[ext_resource type="PackedScene" path="res://minigames/minigame_2/scenes/flor/flor.tscn" id="10_flor"]
+[ext_resource type="AudioStream" uid="uid://bu61hstqeerf3" path="res://minigames/minigame_2/musica/improve_upon_improv.ogg" id="11_musica"]
+[ext_resource type="Script" uid="uid://dx6e86ug45vne" path="res://minigames/minigame_2/scenes/musica.gd" id="12_musica"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nf4gw"]
+texture = ExtResource("5_gra71")
+0:0/animation_columns = 4
+0:0/animation_speed = 3.0
+0:0/animation_frame_0/duration = 1.0
+0:0/animation_frame_1/duration = 1.0
+0:0/animation_frame_2/duration = 1.0
+0:0/animation_frame_3/duration = 1.0
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_bacok"]
+physics_layer_0/collision_layer = 2
+physics_layer_0/collision_mask = 2
+sources/0 = SubResource("TileSetAtlasSource_nf4gw")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bacok"]
+size = Vector2(336, 289)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gm01b"]
+size = Vector2(24, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5nwju"]
+size = Vector2(16, 24)
+
+[node name="MiniJuego2" type="Node2D" unique_id=1605687077]
+
+[node name="Agua" type="Area2D" parent="." unique_id=224646470 groups=["agua"]]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("4_hkwfg")
+
+[node name="SpriteAgua" type="TileMapLayer" parent="Agua" unique_id=663305734]
+tile_map_data = PackedByteArray("AAD2//r/AAAAAAAAAAD2//v/AAAAAAAAAAD2//z/AAAAAAAAAAD2//3/AAAAAAAAAAD2//7/AAAAAAAAAAD2////AAAAAAAAAAD2/wAAAAAAAAAAAAD2/wEAAAAAAAAAAAD2/wIAAAAAAAAAAAD2/wMAAAAAAAAAAAD2/wQAAAAAAAAAAAD2/wUAAAAAAAAAAAD2/wYAAAAAAAAAAAD3//r/AAAAAAAAAAD3//v/AAAAAAAAAAD3//z/AAAAAAAAAAD3//3/AAAAAAAAAAD3//7/AAAAAAAAAAD3////AAAAAAAAAAD3/wAAAAAAAAAAAAD3/wEAAAAAAAAAAAD3/wIAAAAAAAAAAAD3/wMAAAAAAAAAAAD3/wQAAAAAAAAAAAD3/wUAAAAAAAAAAAD3/wYAAAAAAAAAAAD4//r/AAAAAAAAAAD4//v/AAAAAAAAAAD4//z/AAAAAAAAAAD4//3/AAAAAAAAAAD4//7/AAAAAAAAAAD4////AAAAAAAAAAD4/wAAAAAAAAAAAAD4/wEAAAAAAAAAAAD4/wIAAAAAAAAAAAD4/wMAAAAAAAAAAAD4/wQAAAAAAAAAAAD4/wUAAAAAAAAAAAD4/wYAAAAAAAAAAAD5//r/AAAAAAAAAAD5//v/AAAAAAAAAAD5//z/AAAAAAAAAAD5//3/AAAAAAAAAAD5//7/AAAAAAAAAAD5////AAAAAAAAAAD5/wAAAAAAAAAAAAD5/wEAAAAAAAAAAAD5/wIAAAAAAAAAAAD5/wMAAAAAAAAAAAD5/wQAAAAAAAAAAAD5/wUAAAAAAAAAAAD5/wYAAAAAAAAAAAD6//r/AAAAAAAAAAD6//v/AAAAAAAAAAD6//z/AAAAAAAAAAD6//3/AAAAAAAAAAD6//7/AAAAAAAAAAD6////AAAAAAAAAAD6/wAAAAAAAAAAAAD6/wEAAAAAAAAAAAD6/wIAAAAAAAAAAAD6/wMAAAAAAAAAAAD6/wQAAAAAAAAAAAD6/wUAAAAAAAAAAAD6/wYAAAAAAAAAAAD7//r/AAAAAAAAAAD7//v/AAAAAAAAAAD7//z/AAAAAAAAAAD7//3/AAAAAAAAAAD7//7/AAAAAAAAAAD7////AAAAAAAAAAD7/wAAAAAAAAAAAAD7/wEAAAAAAAAAAAD7/wIAAAAAAAAAAAD7/wMAAAAAAAAAAAD7/wQAAAAAAAAAAAD7/wUAAAAAAAAAAAD7/wYAAAAAAAAAAAD8//r/AAAAAAAAAAD8//v/AAAAAAAAAAD8//z/AAAAAAAAAAD8//3/AAAAAAAAAAD8//7/AAAAAAAAAAD8////AAAAAAAAAAD8/wAAAAAAAAAAAAD8/wEAAAAAAAAAAAD8/wIAAAAAAAAAAAD8/wMAAAAAAAAAAAD8/wQAAAAAAAAAAAD8/wUAAAAAAAAAAAD8/wYAAAAAAAAAAAD9//r/AAAAAAAAAAD9//v/AAAAAAAAAAD9//z/AAAAAAAAAAD9//3/AAAAAAAAAAD9//7/AAAAAAAAAAD9////AAAAAAAAAAD9/wAAAAAAAAAAAAD9/wEAAAAAAAAAAAD9/wIAAAAAAAAAAAD9/wMAAAAAAAAAAAD9/wQAAAAAAAAAAAD9/wUAAAAAAAAAAAD9/wYAAAAAAAAAAAD+//r/AAAAAAAAAAD+//v/AAAAAAAAAAD+//z/AAAAAAAAAAD+//3/AAAAAAAAAAD+//7/AAAAAAAAAAD+////AAAAAAAAAAD+/wAAAAAAAAAAAAD+/wEAAAAAAAAAAAD+/wIAAAAAAAAAAAD+/wMAAAAAAAAAAAD+/wQAAAAAAAAAAAD+/wUAAAAAAAAAAAD+/wYAAAAAAAAAAAD///r/AAAAAAAAAAD///v/AAAAAAAAAAD///z/AAAAAAAAAAD///3/AAAAAAAAAAD///7/AAAAAAAAAAD/////AAAAAAAAAAD//wAAAAAAAAAAAAD//wEAAAAAAAAAAAD//wIAAAAAAAAAAAD//wMAAAAAAAAAAAD//wQAAAAAAAAAAAD//wUAAAAAAAAAAAD//wYAAAAAAAAAAAAAAPr/AAAAAAAAAAAAAPv/AAAAAAAAAAAAAPz/AAAAAAAAAAAAAP3/AAAAAAAAAAAAAP7/AAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAAAAAAAAAABAPr/AAAAAAAAAAABAPv/AAAAAAAAAAABAPz/AAAAAAAAAAABAP3/AAAAAAAAAAABAP7/AAAAAAAAAAABAP//AAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAABAAYAAAAAAAAAAAACAPr/AAAAAAAAAAACAPv/AAAAAAAAAAACAPz/AAAAAAAAAAACAP3/AAAAAAAAAAACAP7/AAAAAAAAAAACAP//AAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAACAAYAAAAAAAAAAAADAPr/AAAAAAAAAAADAPv/AAAAAAAAAAADAPz/AAAAAAAAAAADAP3/AAAAAAAAAAADAP7/AAAAAAAAAAADAP//AAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAADAAYAAAAAAAAAAAAEAPr/AAAAAAAAAAAEAPv/AAAAAAAAAAAEAPz/AAAAAAAAAAAEAP3/AAAAAAAAAAAEAP7/AAAAAAAAAAAEAP//AAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAFAPr/AAAAAAAAAAAFAPv/AAAAAAAAAAAFAPz/AAAAAAAAAAAFAP3/AAAAAAAAAAAFAP7/AAAAAAAAAAAFAP//AAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAYAAAAAAAAAAAAGAPr/AAAAAAAAAAAGAPv/AAAAAAAAAAAGAPz/AAAAAAAAAAAGAP3/AAAAAAAAAAAGAP7/AAAAAAAAAAAGAP//AAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAYAAAAAAAAAAAAHAPr/AAAAAAAAAAAHAPv/AAAAAAAAAAAHAPz/AAAAAAAAAAAHAP3/AAAAAAAAAAAHAP7/AAAAAAAAAAAHAP//AAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAYAAAAAAAAAAAAIAPr/AAAAAAAAAAAIAPv/AAAAAAAAAAAIAPz/AAAAAAAAAAAIAP3/AAAAAAAAAAAIAP7/AAAAAAAAAAAIAP//AAAAAAAAAAAIAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAJAPr/AAAAAAAAAAAJAPv/AAAAAAAAAAAJAPz/AAAAAAAAAAAJAP3/AAAAAAAAAAAJAP7/AAAAAAAAAAAJAP//AAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAKAPr/AAAAAAAAAAAKAPv/AAAAAAAAAAAKAPz/AAAAAAAAAAAKAP3/AAAAAAAAAAAKAP7/AAAAAAAAAAAKAP//AAAAAAAAAAAKAAAAAAAAAAAAAAAKAAEAAAAAAAAAAAAKAAIAAAAAAAAAAAAKAAMAAAAAAAAAAAAKAAQAAAAAAAAAAAAKAAUAAAAAAAAAAAAKAAYAAAAAAAAAAAD2//n/AAAAAAAAAAD3//n/AAAAAAAAAAD4//n/AAAAAAAAAAD5//n/AAAAAAAAAAD6//n/AAAAAAAAAAD7//n/AAAAAAAAAAD8//n/AAAAAAAAAAD9//n/AAAAAAAAAAD+//n/AAAAAAAAAAD///n/AAAAAAAAAAAAAPn/AAAAAAAAAAABAPn/AAAAAAAAAAACAPn/AAAAAAAAAAADAPn/AAAAAAAAAAAEAPn/AAAAAAAAAAAFAPn/AAAAAAAAAAAGAPn/AAAAAAAAAAAHAPn/AAAAAAAAAAAIAPn/AAAAAAAAAAAJAPn/AAAAAAAAAAAKAPn/AAAAAAAAAAD2//j/AAAAAAAAAAD2//f/AAAAAAAAAAD2/wcAAAAAAAAAAAAKAAcAAAAAAAAAAAAKAPj/AAAAAAAAAAAKAPf/AAAAAAAAAAD3/wcAAAAAAAAAAAD4/wcAAAAAAAAAAAD5/wcAAAAAAAAAAAD6/wcAAAAAAAAAAAD7/wcAAAAAAAAAAAD8/wcAAAAAAAAAAAD9/wcAAAAAAAAAAAD+/wcAAAAAAAAAAAD//wcAAAAAAAAAAAAAAAcAAAAAAAAAAAABAAcAAAAAAAAAAAACAAcAAAAAAAAAAAADAAcAAAAAAAAAAAAEAAcAAAAAAAAAAAAFAAcAAAAAAAAAAAAGAAcAAAAAAAAAAAAHAAcAAAAAAAAAAAAIAAcAAAAAAAAAAAAJAAcAAAAAAAAAAAD3//f/AAAAAAAAAAD4//f/AAAAAAAAAAD5//f/AAAAAAAAAAD6//f/AAAAAAAAAAD7//f/AAAAAAAAAAD8//f/AAAAAAAAAAD9//f/AAAAAAAAAAD+//f/AAAAAAAAAAD///f/AAAAAAAAAAAAAPf/AAAAAAAAAAABAPf/AAAAAAAAAAACAPf/AAAAAAAAAAADAPf/AAAAAAAAAAAEAPf/AAAAAAAAAAAFAPf/AAAAAAAAAAAGAPf/AAAAAAAAAAAHAPf/AAAAAAAAAAAIAPf/AAAAAAAAAAAJAPf/AAAAAAAAAAAJAPj/AAAAAAAAAAAIAPj/AAAAAAAAAAAHAPj/AAAAAAAAAAAGAPj/AAAAAAAAAAAFAPj/AAAAAAAAAAAEAPj/AAAAAAAAAAADAPj/AAAAAAAAAAACAPj/AAAAAAAAAAABAPj/AAAAAAAAAAAAAPj/AAAAAAAAAAD///j/AAAAAAAAAAD+//j/AAAAAAAAAAD9//j/AAAAAAAAAAD8//j/AAAAAAAAAAD7//j/AAAAAAAAAAD6//j/AAAAAAAAAAD5//j/AAAAAAAAAAD4//j/AAAAAAAAAAD3//j/AAAAAAAAAAD2/wgAAAAAAAAAAAD3/wgAAAAAAAAAAAD4/wgAAAAAAAAAAAD5/wgAAAAAAAAAAAD6/wgAAAAAAAAAAAD7/wgAAAAAAAAAAAD8/wgAAAAAAAAAAAD9/wgAAAAAAAAAAAD+/wgAAAAAAAAAAAD//wgAAAAAAAAAAAAAAAgAAAAAAAAAAAABAAgAAAAAAAAAAAACAAgAAAAAAAAAAAADAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAAAAAAAAAAHAAgAAAAAAAAAAAAIAAgAAAAAAAAAAAAJAAgAAAAAAAAAAAAKAAgAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_bacok")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Agua" unique_id=276453709]
+position = Vector2(7, -0.5)
+shape = SubResource("RectangleShape2D_bacok")
+debug_color = Color(0.8527349, 0.35091037, 0.3299898, 0.6156863)
+
+[node name="Pasto" type="TileMapLayer" parent="." unique_id=751758116]
+position = Vector2(-1, 0)
+tile_map_data = PackedByteArray("AAD0//n/AAAGAAEAAAD0//r/AAAOAAEAAAD0//v/AAAGAAEAAAD0//z/AAAGAAEAAAD0//3/AAAGAAEAAAD0//7/AAAOAAEAAAD0////AAAGAAEAAAD0/wAAAAAGAAEAAAD0/wEAAAAGAAEAAAD0/wIAAAAGAAEAAAD0/wMAAAAOAAEAAAD0/wQAAAAGAAEAAAD0/wUAAAAGAAEAAAD0/wYAAAAGAAEAAAD1//n/AAAPAAEAAAD1//r/AAAHAAEAAAD1//v/AAAHAAEAAAD1//z/AAAPAAEAAAD1//3/AAAHAAEAAAD1//7/AAAHAAEAAAD1////AAAHAAEAAAD1/wAAAAAPAAEAAAD1/wEAAAAHAAEAAAD1/wIAAAAHAAEAAAD1/wMAAAAHAAEAAAD1/wQAAAAPAAEAAAD1/wYAAAAPAAEAAADz//n/AAAMAAMAAADz//r/AAAGAAEAAADz//v/AAAGAAEAAADz//z/AAAGAAEAAADz//3/AAAGAAEAAADz//7/AAAGAAEAAADz////AAAGAAEAAADz/wAAAAAGAAEAAADz/wEAAAAGAAEAAADz/wIAAAAGAAEAAADz/wMAAAAGAAEAAADz/wQAAAAGAAEAAADz/wUAAAAGAAEAAADz/wYAAAAGAAEAAAALAPn/AAAFAAEAAAALAPr/AAAFAAEAAAALAPv/AAAFAAEAAAALAPz/AAAFAAEAAAALAP3/AAAFAAEAAAALAP7/AAAFAAEAAAALAP//AAAFAAEAAAALAAAAAAAFAAEAAAALAAEAAAAFAAEAAAALAAIAAAAFAAEAAAALAAMAAAAFAAEAAAALAAQAAAAFAAEAAAALAAUAAAAFAAEAAAALAAYAAAAFAAEAAAAMAPn/AAAGAAEAAAAMAPr/AAAGAAEAAAAMAPv/AAAGAAEAAAAMAPz/AAAGAAEAAAAMAP3/AAAGAAEAAAAMAP7/AAAGAAEAAAAMAP//AAAGAAEAAAAMAAAAAAAGAAEAAAAMAAEAAAAGAAEAAAAMAAIAAAAGAAEAAAAMAAMAAAAGAAEAAAAMAAQAAAAGAAEAAAAMAAUAAAAGAAEAAAAMAAYAAAAGAAEAAAANAAYAAAAGAAEAAAANAAUAAAAGAAEAAAANAAQAAAAGAAEAAAANAAMAAAAGAAEAAAANAAIAAAAGAAEAAAANAAEAAAAGAAEAAAANAAAAAAAGAAEAAAANAP//AAAGAAEAAAANAP7/AAAGAAEAAAANAP3/AAAGAAEAAAANAPz/AAAGAAEAAAANAPv/AAAGAAEAAAANAPr/AAAGAAEAAAANAPn/AAAGAAEAAAAOAAUAAAAGAAEAAAAOAAQAAAAGAAEAAAAOAAMAAAAGAAEAAAAOAAIAAAAGAAEAAAAOAAEAAAAGAAEAAAAOAAAAAAAGAAEAAAAOAP//AAAGAAEAAAAOAP7/AAAGAAEAAAAOAP3/AAAGAAEAAAAOAPz/AAAGAAEAAAAOAPv/AAAGAAEAAAAOAPr/AAAGAAEAAAAOAPn/AAAGAAEAAAAOAAYAAAAGAAEAAAD1/wUAAAAPAAEAAAD1/wcAAAAPAAEAAAD0/wcAAAAOAAEAAADz/wcAAAAOAAEAAADz//j/AAAOAAEAAADz//f/AAAOAAEAAAD0//f/AAAOAAEAAAD0//j/AAAOAAEAAAD1//j/AAAPAAEAAAD1//f/AAAPAAEAAAALAAcAAAANAAEAAAAMAAcAAAAOAAEAAAANAAcAAAAGAAEAAAAOAAcAAAAOAAEAAAALAPj/AAAFAAEAAAALAPf/AAAFAAEAAAAMAPf/AAAGAAEAAAANAPf/AAAGAAEAAAANAPj/AAAGAAEAAAAMAPj/AAAGAAEAAAAOAPj/AAAGAAEAAAAOAPf/AAAGAAEAAAA=")
+tile_set = ExtResource("1_bvk8f")
+
+[node name="Borde" parent="." unique_id=1283560769 instance=ExtResource("2_e1b68")]
+tile_map_data = PackedByteArray("AADy/wAAAAANAAQAAADy//j/AAAOAAEAAADy//n/AAANAAQAAADy//r/AAANAAQAAADy//v/AAANAAQAAADy//z/AAANAAQAAADy//3/AAANAAQAAADy//7/AAANAAQAAADy////AAANAAQAAADy/wEAAAANAAQAAADy/wIAAAANAAQAAADy/wMAAAANAAQAAADy/wQAAAANAAQAAADy/wUAAAANAAQAAADy/wYAAAANAAQAAADy/wcAAAAOAAEAAADv//j/AwAFAAgAAADv//n/AwAFAAkAAADv//r/AwAFAAgAAADv//v/AwAFAAkAAADv//z/AwAFAAgAAADv//3/AwAFAAkAAADv//7/AwAFAAgAAADv////AwAFAAkAAADv/wAAAwAFAAgAAADv/wEAAwAFAAkAAADv/wIAAwAFAAgAAADv/wMAAwAFAAkAAADv/wQAAwAFAAgAAADv/wUAAwAFAAkAAADv/wYAAwAFAAgAAADv/wcAAwAFAAkAAADw/wcAAwAGAAkAAADx/wcAAwAFAAkAAADx/wYAAwAFAAgAAADw/wYAAwAGAAgAAADw/wUAAwAGAAkAAADw/wQAAwAGAAgAAADw/wMAAwAGAAkAAADx/wUAAwAFAAkAAADx/wQAAwAFAAgAAADx/wMAAwAFAAkAAADx/wIAAwAFAAgAAADw/wIAAwAGAAgAAADw/wEAAwAGAAkAAADw/wAAAwAGAAgAAADw////AwAGAAkAAADw//7/AwAGAAgAAADw//3/AwAGAAkAAADw//z/AwAGAAgAAADw//v/AwAGAAkAAADw//r/AwAGAAgAAADw//n/AwAGAAkAAADw//j/AwAGAAgAAADx//j/AwAFAAgAAADx//n/AwAFAAkAAADx//r/AwAFAAgAAADx//v/AwAFAAkAAADx//z/AwAFAAgAAADx//3/AwAFAAkAAADx//7/AwAFAAgAAADx////AwAFAAkAAADx/wAAAwAFAAgAAADx/wEAAwAFAAkAAAARAAcAAwAGAAgAAAARAAYAAwAGAAkAAAARAAUAAwAGAAgAAAARAAQAAwAGAAkAAAARAAMAAwAGAAgAAAARAAIAAwAGAAkAAAARAAEAAwAGAAgAAAARAAAAAwAGAAkAAAARAP//AwAGAAgAAAARAP7/AwAGAAkAAAARAP3/AwAGAAgAAAARAPz/AwAGAAkAAAARAPv/AwAGAAgAAAARAPr/AwAGAAkAAAARAPn/AwAGAAgAAAAQAPn/AAANAAQAAAAQAPj/AwAFAAkAAAARAPj/AwAGAAkAAAAQAPr/AAANAAQAAAAQAPv/AAANAAQAAAAQAPz/AAANAAQAAAAQAP3/AAANAAQAAAAQAP7/AAANAAQAAAAQAP//AAANAAQAAAAQAAAAAAANAAQAAAAQAAEAAAANAAQAAAAQAAIAAAANAAQAAAAQAAMAAAANAAQAAAAQAAQAAAANAAQAAAAQAAUAAAANAAQAAAAQAAYAAAANAAQAAAAQAAcAAAAOAAEAAAAOAPj/AAAGAAEAAAAPAPj/AwAGAAkAAAAOAPn/AAAGAAEAAAAOAPr/AAAGAAEAAAAPAPn/AAAGAAEAAAAPAPr/AAAGAAEAAAAOAPv/AAAGAAEAAAAOAPz/AAAGAAEAAAAPAPv/AAAGAAEAAAAPAPz/AAAGAAEAAAAOAP3/AAAGAAEAAAAOAP7/AAAGAAEAAAAPAP3/AAAGAAEAAAAPAP7/AAAGAAEAAAAOAP//AAAGAAEAAAAOAAAAAAAGAAEAAAAPAP//AAAGAAEAAAAPAAAAAAAGAAEAAAAOAAEAAAAGAAEAAAAOAAIAAAAGAAEAAAAPAAEAAAAGAAEAAAAPAAIAAAAGAAEAAAAOAAMAAAAGAAEAAAAOAAQAAAAGAAEAAAAPAAMAAAAGAAEAAAAPAAQAAAAGAAEAAAAOAAUAAAAGAAEAAAAOAAYAAAAGAAEAAAAPAAUAAAAGAAEAAAAPAAYAAAAGAAEAAAAOAAcAAAAGAAEAAAAPAAcAAAAGAAEAAAAJAAkAAgAAAAAAAAAIAAkAAgAAAAAAAAAHAAkAAgAAAAAAAAAGAAkAAgAAAAAAAAAFAAkAAgAAAAAAAAAEAAkAAgAAAAAAAAADAAkAAgAAAAAAAAACAAkAAgAAAAAAAAABAAkAAgAAAAAAAAAAAAkAAgAAAAAAAAD//wkAAgAAAAAAAAD+/wkAAgAAAAAAAAD9/wkAAgAAAAAAAAD8/wkAAgAAAAAAAAD7/wkAAgAAAAAAAAD6/wkAAgAAAAAAAAD5/wkAAgAAAAAAAAD4/wkAAgAAAAAAAAD3/wkAAgAAAAAAAAAJAPb/AgAAAAAAAAAIAPb/AgAAAAAAAAAHAPb/AgAAAAAAAAAGAPb/AgAAAAAAAAAFAPb/AgAAAAAAAAAEAPb/AgAAAAAAAAADAPb/AgAAAAAAAAACAPb/AgAAAAAAAAABAPb/AgAAAAAAAAAAAPb/AgAAAAAAAAD///b/AgAAAAAAAAD+//b/AgAAAAAAAAD9//b/AgAAAAAAAAD8//b/AgAAAAAAAAD7//b/AgAAAAAAAAD6//b/AgAAAAAAAAD5//b/AgAAAAAAAAD4//b/AgAAAAAAAAD3//b/AgAAAAAAAADx/wgAAwAFAAgAAADx/wkAAwAFAAkAAADy/wgAAwAGAAgAAADy/wkAAwAGAAkAAADv/wgAAwAFAAgAAADv/wkAAwAFAAkAAADw/wgAAwAGAAgAAADw/wkAAwAGAAkAAAAOAAgAAAAGAAEAAAAOAAkAAAAGAAEAAAAPAAgAAAAGAAEAAAAPAAkAAAAGAAEAAAAQAAgAAAAGAAEAAAAQAAkAAAAGAAEAAAARAAgAAwAGAAgAAAARAAkAAwAGAAgAAAAKAAkAAwAAAAoAAAALAAgAAAAGAAEAAAALAAkAAAAGAAEAAAAMAAgAAAAGAAEAAAAMAAkAAAAGAAEAAAANAAgAAAAGAAEAAAANAAkAAAAGAAEAAAD0/wgAAAAGAAEAAADz/wgAAAAGAAEAAADz/wkAAAAGAAEAAAD0/wkAAAAGAAEAAAD1/wgAAAAGAAEAAAD2/wkAAAAGAAEAAAD1/wkAAAAGAAEAAAD2//b/AAAGAAEAAAD1//b/AAAGAAEAAAD0//b/AAAGAAEAAADy//b/AAAGAAEAAADz//b/AAAGAAEAAADy//f/AAAGAAEAAADw//f/AAAGAAEAAADx//b/AAAGAAEAAADw//b/AAAGAAEAAADx//f/AAAGAAEAAADv//f/AAAGAAEAAADv//b/AAAGAAEAAAAKAPb/AAAGAAEAAAALAPb/AAAGAAEAAAAMAPb/AAAGAAEAAAANAPb/AAAGAAEAAAAOAPb/AAAGAAEAAAAPAPb/AAAGAAEAAAAQAPb/AAAGAAEAAAARAPb/AAAGAAEAAAARAPf/AAAGAAEAAAAQAPf/AAAGAAEAAAAPAPf/AAAGAAEAAAAOAPf/AAAGAAEAAAA=")
+collision_visibility_mode = 1
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=788256219]
+layer = 3
+script = ExtResource("9_hud")
+
+[node name="Corazones" type="HBoxContainer" parent="HUD" unique_id=174006412]
+offset_right = 203.0
+offset_bottom = 40.0
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Corazon1" type="TextureRect" parent="HUD/Corazones" unique_id=2009559758]
+layout_mode = 2
+texture = ExtResource("6_nf4gw")
+
+[node name="Corazon2" type="TextureRect" parent="HUD/Corazones" unique_id=1768232546]
+layout_mode = 2
+texture = ExtResource("6_nf4gw")
+
+[node name="Corazon3" type="TextureRect" parent="HUD/Corazones" unique_id=979649240]
+layout_mode = 2
+texture = ExtResource("6_nf4gw")
+
+[node name="ContadorFlores" type="HBoxContainer" parent="HUD" unique_id=1597530001]
+offset_right = 40.0
+offset_bottom = 12.0
+theme_override_constants/separation = 3
+
+[node name="Icono" type="TextureRect" parent="HUD/ContadorFlores" unique_id=384009794]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7_vh8lw")
+
+[node name="Cantidad" type="Label" parent="HUD/ContadorFlores" unique_id=1597530003]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.1, 0.06, 0.05, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 10
+text = "0/0"
+
+[node name="Musica" type="AudioStreamPlayer" parent="." unique_id=1597530004]
+stream = ExtResource("11_musica")
+script = ExtResource("12_musica")
+
+[node name="Flores" type="Node2D" parent="." unique_id=1597530005]
+
+[node name="FlorOrilla1" parent="Flores" unique_id=1597530006 instance=ExtResource("10_flor")]
+position = Vector2(196, -90)
+
+[node name="FlorOrilla2" parent="Flores" unique_id=1597530007 instance=ExtResource("10_flor")]
+position = Vector2(196, 40)
+
+[node name="FlorOrilla3" parent="Flores" unique_id=1597530008 instance=ExtResource("10_flor")]
+position = Vector2(196, 120)
+
+[node name="Barco" type="AnimatableBody2D" parent="." unique_id=1195531490]
+position = Vector2(-138, -95)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("6_5nwju")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Barco" unique_id=1127116109]
+texture = ExtResource("8_gm01b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco" unique_id=151276013]
+shape = SubResource("RectangleShape2D_gm01b")
+debug_color = Color(0.93390125, 0.69237274, 0, 0.9019608)
+
+[node name="ZonaAterrizaje" type="Area2D" parent="Barco" unique_id=1032196647 groups=["zona_barco"]]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco/ZonaAterrizaje" unique_id=602504908]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_5nwju")
+debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
+
+[node name="Barco2" type="AnimatableBody2D" parent="." unique_id=1756804587]
+position = Vector2(-83, 112)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("7_mm3fm")
+velocidad = 20.0
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Barco2" unique_id=501840410]
+texture = ExtResource("8_gm01b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco2" unique_id=259043188]
+shape = SubResource("RectangleShape2D_gm01b")
+debug_color = Color(0.93390125, 0.69237274, 0, 0.9019608)
+
+[node name="ZonaAterrizaje" type="Area2D" parent="Barco2" unique_id=2121289608 groups=["zona_barco"]]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco2/ZonaAterrizaje" unique_id=1668686287]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_5nwju")
+debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
+
+[node name="FlorBarco2" parent="Barco2" unique_id=1597530009 instance=ExtResource("10_flor")]
+position = Vector2(0, -4)
+
+[node name="Barco3" type="AnimatableBody2D" parent="." unique_id=1366695597]
+position = Vector2(-30, -112)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("7_mm3fm")
+velocidad = 20.0
+direccion = 1
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Barco3" unique_id=2070494745]
+texture = ExtResource("8_gm01b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco3" unique_id=965380820]
+shape = SubResource("RectangleShape2D_gm01b")
+debug_color = Color(0.93390125, 0.69237274, 0, 0.9019608)
+
+[node name="ZonaAterrizaje" type="Area2D" parent="Barco3" unique_id=815161441 groups=["zona_barco"]]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco3/ZonaAterrizaje" unique_id=1150803843]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_5nwju")
+debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
+
+[node name="Barco4" type="AnimatableBody2D" parent="." unique_id=725980393]
+position = Vector2(28, 112)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("6_5nwju")
+velocidad = 15.0
+direccion = -1
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Barco4" unique_id=1072729923]
+texture = ExtResource("8_gm01b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco4" unique_id=1368770873]
+shape = SubResource("RectangleShape2D_gm01b")
+debug_color = Color(0.93390125, 0.69237274, 0, 0.9019608)
+
+[node name="ZonaAterrizaje" type="Area2D" parent="Barco4" unique_id=567311336 groups=["zona_barco"]]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco4/ZonaAterrizaje" unique_id=134556554]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_5nwju")
+debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
+
+[node name="FlorBarco4" parent="Barco4" unique_id=1597530010 instance=ExtResource("10_flor")]
+position = Vector2(0, -4)
+
+[node name="Barco5" type="AnimatableBody2D" parent="." unique_id=1659288734]
+position = Vector2(84, -112)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("6_5nwju")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Barco5" unique_id=1802973718]
+texture = ExtResource("8_gm01b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco5" unique_id=867965119]
+shape = SubResource("RectangleShape2D_gm01b")
+debug_color = Color(0.93390125, 0.69237274, 0, 0.9019608)
+
+[node name="ZonaAterrizaje" type="Area2D" parent="Barco5" unique_id=287877101 groups=["zona_barco"]]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco5/ZonaAterrizaje" unique_id=1385918751]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_5nwju")
+debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
+
+[node name="Barco6" type="AnimatableBody2D" parent="." unique_id=1821602054]
+position = Vector2(137, 112)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("6_5nwju")
+direccion = -1
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Barco6" unique_id=849402996]
+texture = ExtResource("8_gm01b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco6" unique_id=814879396]
+shape = SubResource("RectangleShape2D_gm01b")
+debug_color = Color(0.93390125, 0.69237274, 0, 0.9019608)
+
+[node name="ZonaAterrizaje" type="Area2D" parent="Barco6" unique_id=18613313 groups=["zona_barco"]]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Barco6/ZonaAterrizaje" unique_id=1279117023]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_5nwju")
+debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
+
+[node name="FlorBarco6" parent="Barco6" unique_id=1597530011 instance=ExtResource("10_flor")]
+position = Vector2(0, -4)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=202002789]
+y_sort_enabled = true
+offset = Vector2(7.92, 0)
+zoom = Vector2(2.04, 2.04)
+
+[node name="Personaje" parent="." unique_id=833555199 groups=["jugador"] instance=ExtResource("3_e1b68")]
+position = Vector2(-198, -5)
+corazon_lleno = ExtResource("6_nf4gw")
+corazon_vacio = ExtResource("7_faxn2")
+
+[connection signal="area_entered" from="Agua" to="Agua" method="_on_area_entered"]

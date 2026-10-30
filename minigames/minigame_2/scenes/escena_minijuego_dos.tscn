@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cncf81fv7i03x"]
+
+[ext_resource type="PackedScene" uid="uid://d24js1n6lhip1" path="res://minigames/minigame_2/scenes/mini_juego_2.tscn" id="1_eqoi0"]
+
+[node name="EscenaMinijuegoDos" type="Node2D" unique_id=462355493]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=524590435]
+zoom = Vector2(2.04, 2.04)
+
+[node name="MiniJuego2" parent="." unique_id=1605687077 instance=ExtResource("1_eqoi0")]
+position = Vector2(-9, 1)
