@@ -38,8 +38,17 @@ func go_to_finale() -> void:
 	change_scene(FINALE)
 
 
+## Minijuegos que no siguen la convención de carpetas (ruta de su escena principal).
+const MINIGAME_SCENES := {
+	"minigame_trajineras": "res://minigames/minigame_2/scenes/mini_juego_2.tscn",
+}
+
+
 func go_to_minigame(minigame_id: String) -> void:
 	## Convención: minigames/<id>/<id>.tscn  (ej. minigames/minigame_1/minigame_1.tscn)
+	if MINIGAME_SCENES.has(minigame_id):
+		change_scene(MINIGAME_SCENES[minigame_id])
+		return
 	change_scene("res://minigames/%s/%s.tscn" % [minigame_id, minigame_id])
 
 

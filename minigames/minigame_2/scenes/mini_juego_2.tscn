@@ -15,6 +15,8 @@
 [ext_resource type="PackedScene" path="res://minigames/minigame_2/scenes/flor/flor.tscn" id="10_flor"]
 [ext_resource type="AudioStream" uid="uid://bu61hstqeerf3" path="res://minigames/minigame_2/musica/improve_upon_improv.ogg" id="11_musica"]
 [ext_resource type="Script" uid="uid://dx6e86ug45vne" path="res://minigames/minigame_2/scenes/musica.gd" id="12_musica"]
+[ext_resource type="Script" path="res://minigames/minigame_2/scenes/camara.gd" id="20_camara"]
+[ext_resource type="PackedScene" uid="uid://cyfhomka45t1r" path="res://menus/pause/PauseMenu.tscn" id="21_pausa"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nf4gw"]
 texture = ExtResource("5_gra71")
@@ -103,7 +105,6 @@ texture = ExtResource("7_vh8lw")
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.1, 0.06, 0.05, 1)
 theme_override_constants/outline_size = 2
-theme_override_font_sizes/font_size = 10
 text = "0/0"
 
 [node name="Musica" type="AudioStreamPlayer" parent="." unique_id=1597530004]
@@ -275,13 +276,17 @@ debug_color = Color(2.6471912e-06, 0.631504, 0.4648198, 0.41960785)
 position = Vector2(0, -4)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=202002789]
-y_sort_enabled = true
-offset = Vector2(7.92, 0)
-zoom = Vector2(2.04, 2.04)
+position_smoothing_enabled = true
+position_smoothing_speed = 6.0
+script = ExtResource("20_camara")
 
 [node name="Personaje" parent="." unique_id=833555199 groups=["jugador"] instance=ExtResource("3_e1b68")]
 position = Vector2(-198, -5)
 corazon_lleno = ExtResource("6_nf4gw")
 corazon_vacio = ExtResource("7_faxn2")
+
+
+[node name="PauseMenu" parent="." unique_id=1597530020 instance=ExtResource("21_pausa")]
+exit_to_world = true
 
 [connection signal="area_entered" from="Agua" to="Agua" method="_on_area_entered"]

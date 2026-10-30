@@ -24,6 +24,7 @@ func _physics_process(delta: float) -> void:
 
 		# Reaparece por debajo del agua
 		global_position.y = limite_inferior_y + margen_reaparicion
+		reset_physics_interpolation()
 
 	# Si baja y alcanza el borde inferior
 	elif direccion == 1 and global_position.y >= limite_inferior_y:
@@ -31,6 +32,7 @@ func _physics_process(delta: float) -> void:
 
 		# Reaparece por encima del agua
 		global_position.y = limite_superior_y - margen_reaparicion
+		reset_physics_interpolation()
 
 
 func comprobar_jugador_a_bordo() -> void:

@@ -53,6 +53,7 @@ func actualizar_corazones()-> void:
 #Reaparición al tocar el agua: en la orilla donde estuvo por última vez
 func respawn():
 	self.global_position = punto_reaparicion
+	reset_physics_interpolation()   # que no se vea "deslizarse" hasta la orilla
 
 #Revisa en qué orilla está parado para saber dónde reaparecer
 func actualizar_orilla() -> void:
@@ -71,6 +72,7 @@ func recoger_flor() -> void:
 
 	if flores_recogidas >= total_flores:
 		print("¡Recolectaste todas las flores!")
+		ganar()
 
 #Daño al tocar el agua
 func recibir_dano() -> void:
@@ -107,6 +109,18 @@ func parpadear() -> void:
 	
 		print("Fin de la invulnerabilidad")
 
+#Gana el minijuego: avisa al juego y regresa al mapa
+func ganar() -> void:
+	set_physics_process(false)
+	set_process_input(false)
+	velocity = Vector2.ZERO
+	animated_sprite_2d.play("idle_down")
+	$"../HUD".mostrar_mensaje("¡Recolectaste todas las flores!", 2.0)
+	await get_tree().create_timer(2.2).timeout
+	GameState.complete_minigame("minigame_trajineras")
+	AudioManager.stop_music()
+	SceneManager.go_to_world()
+
 func morir() -> void:
 	print("Moriste")
 	# Antes se borraba al jugador (queue_free) y el juego se quedaba congelado.
@@ -117,7 +131,8 @@ func morir() -> void:
 	var tween := create_tween()
 	tween.tween_property(animated_sprite_2d, "modulate:a", 0.0, 0.6)
 	await get_tree().create_timer(1.5).timeout
-	get_tree().reload_current_scene()
+	#Reinicia el minijuego con fundido (SceneManager)
+	SceneManager.change_scene(get_tree().current_scene.scene_file_path)
 
 func _physics_process(delta: float) -> void:
 	get_input()
@@ -138,7 +153,7 @@ func revisar_agua() -> void:
 			return
 	
 func get_input():
-	var input_direction = Input.get_vector("left", "right", "up", "down")
+	var input_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	
 	if input_direction == Vector2.ZERO:
 		velocity = Vector2.ZERO
